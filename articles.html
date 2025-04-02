@@ -1,0 +1,803 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Articles | Stahl Insights</title>
+    <meta name="description" content="Exclusive market intelligence articles from Stahl Insights. Uncover hidden opportunities and dominate the financial landscape with our expert analysis.">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* Articles Page Specific Styles */
+        .articles-hero {
+            background-color: var(--bg-secondary);
+            padding: 8rem 0 5rem;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .articles-hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 30%, rgba(0, 200, 255, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 70%, rgba(54, 249, 197, 0.1) 0%, transparent 50%);
+            z-index: 0;
+        }
+        
+        .articles-hero-content {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .articles-hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .articles-hero p {
+            font-size: 1.2rem;
+            margin-bottom: 2.5rem;
+            color: var(--text-primary);
+        }
+        
+        .articles-filter {
+            padding: 2rem 0;
+            background-color: var(--bg-primary);
+            border-bottom: 1px solid rgba(0, 200, 255, 0.1);
+        }
+        
+        .filter-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        
+        .filter-categories {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        
+        .filter-category {
+            padding: 0.5rem 1.5rem;
+            background-color: rgba(0, 200, 255, 0.1);
+            border-radius: 50px;
+            font-size: 0.9rem;
+            font-family: var(--font-heading);
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all var(--transition-speed) ease;
+        }
+        
+        .filter-category:hover, .filter-category.active {
+            background-color: rgba(0, 200, 255, 0.2);
+            color: var(--accent-1);
+        }
+        
+        .filter-category.active {
+            box-shadow: 0 0 10px rgba(0, 200, 255, 0.3);
+        }
+        
+        .filter-search {
+            position: relative;
+        }
+        
+        .filter-search input {
+            padding: 0.5rem 1rem 0.5rem 2.5rem;
+            background-color: rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(0, 200, 255, 0.2);
+            border-radius: 50px;
+            color: var(--text-primary);
+            font-family: var(--font-body);
+            width: 250px;
+            transition: all var(--transition-speed) ease;
+        }
+        
+        .filter-search input:focus {
+            outline: none;
+            border-color: var(--accent-1);
+            box-shadow: 0 0 10px rgba(0, 200, 255, 0.2);
+            width: 300px;
+        }
+        
+        .filter-search i {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-secondary);
+        }
+        
+        .articles-main {
+            padding: 5rem 0;
+            background-color: var(--bg-primary);
+        }
+        
+        .articles-layout {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 3rem;
+        }
+        
+        .articles-list {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+        
+        .article-item {
+            display: flex;
+            gap: 2rem;
+            background-color: var(--bg-secondary);
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            transition: all var(--transition-speed) ease;
+            border: 1px solid rgba(0, 200, 255, 0.1);
+        }
+        
+        .article-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5), 0 0 10px rgba(0, 200, 255, 0.2);
+            border-color: rgba(0, 200, 255, 0.3);
+        }
+        
+        .article-item-img {
+            width: 300px;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .article-item-content {
+            padding: 2rem;
+            flex: 1;
+        }
+        
+        .article-item-meta {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+        
+        .article-item-tag {
+            display: inline-block;
+            background-color: rgba(0, 200, 255, 0.1);
+            color: var(--accent-1);
+            font-size: 0.8rem;
+            padding: 0.3rem 0.8rem;
+            border-radius: 4px;
+            font-family: var(--font-data);
+        }
+        
+        .article-item-date {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            font-family: var(--font-data);
+        }
+        
+        .article-item-title {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .article-item-excerpt {
+            margin-bottom: 1.5rem;
+            color: var(--text-secondary);
+        }
+        
+        .article-item-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .article-item-stats {
+            display: flex;
+            gap: 1rem;
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+        
+        .article-item-stat {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .article-item-stat i {
+            color: var(--accent-1);
+        }
+        
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+        
+        .sidebar-widget {
+            background-color: var(--bg-secondary);
+            border-radius: 8px;
+            padding: 2rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(0, 200, 255, 0.1);
+        }
+        
+        .sidebar-widget-title {
+            font-size: 1.2rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.8rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .trending-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        
+        .trending-item {
+            display: flex;
+            gap: 1rem;
+        }
+        
+        .trending-number {
+            font-family: var(--font-data);
+            font-size: 1.5rem;
+            color: var(--accent-1);
+            opacity: 0.5;
+            font-weight: 700;
+            line-height: 1;
+        }
+        
+        .trending-content h4 {
+            font-size: 1rem;
+            margin-bottom: 0.3rem;
+        }
+        
+        .trending-content p {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            margin-bottom: 0;
+        }
+        
+        .market-movers {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        
+        .market-mover {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.8rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .market-mover:last-child {
+            border-bottom: none;
+        }
+        
+        .market-mover-name {
+            font-family: var(--font-data);
+            font-weight: 600;
+        }
+        
+        .market-mover-change {
+            font-family: var(--font-data);
+            font-weight: 600;
+        }
+        
+        .market-mover-change.positive {
+            color: var(--chart-green);
+        }
+        
+        .market-mover-change.negative {
+            color: var(--chart-red);
+        }
+        
+        .newsletter-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        
+        .newsletter-input {
+            padding: 0.8rem 1rem;
+            background-color: rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(0, 200, 255, 0.2);
+            border-radius: 4px;
+            color: var(--text-primary);
+            font-family: var(--font-body);
+            transition: all var(--transition-speed) ease;
+        }
+        
+        .newsletter-input:focus {
+            outline: none;
+            border-color: var(--accent-1);
+            box-shadow: 0 0 10px rgba(0, 200, 255, 0.2);
+        }
+        
+        .newsletter-btn {
+            padding: 0.8rem;
+            background: linear-gradient(90deg, var(--accent-1), var(--accent-3));
+            color: var(--bg-primary);
+            font-family: var(--font-heading);
+            font-weight: 600;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all var(--transition-speed) ease;
+        }
+        
+        .newsletter-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 200, 255, 0.3);
+        }
+        
+        .pagination {
+            display: flex;
+            justify-content: center;
+            margin-top: 3rem;
+        }
+        
+        .pagination-item {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: var(--bg-secondary);
+            border: 1px solid rgba(0, 200, 255, 0.1);
+            color: var(--text-secondary);
+            font-family: var(--font-data);
+            margin: 0 0.3rem;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all var(--transition-speed) ease;
+        }
+        
+        .pagination-item:hover, .pagination-item.active {
+            background-color: rgba(0, 200, 255, 0.1);
+            color: var(--accent-1);
+            border-color: rgba(0, 200, 255, 0.3);
+        }
+        
+        .pagination-item.active {
+            box-shadow: 0 0 10px rgba(0, 200, 255, 0.2);
+        }
+        
+        @media (max-width: 992px) {
+            .articles-layout {
+                grid-template-columns: 1fr;
+            }
+            
+            .article-item {
+                flex-direction: column;
+            }
+            
+            .article-item-img {
+                width: 100%;
+                height: 200px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .articles-hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .articles-hero p {
+                font-size: 1rem;
+            }
+            
+            .filter-container {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .filter-search {
+                width: 100%;
+            }
+            
+            .filter-search input {
+                width: 100%;
+            }
+            
+            .filter-search input:focus {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="header-container">
+            <div class="logo">
+                <img src="images/logo.png" alt="Stahl Insights Logo" id="logo-placeholder">
+                <div class="logo-text">STAHL<span>INSIGHTS</span></div>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="articles.html">Articles</a></li>
+                    <li><a href="dashboards.html">Dashboards</a></li>
+                    <li><a href="premium.html">Premium</a></li>
+                    <li><a href="about.html">About</a></li>
+                </ul>
+            </nav>
+            <button class="login-btn">Login</button>
+        </div>
+    </header>
+
+    <!-- Breaking News Ticker -->
+    <div class="ticker-wrap">
+        <div class="ticker">
+            <div class="ticker-item"><span>BREAKING:</span> Company Z shares plummet 15% amid undisclosed investigation</div>
+            <div class="ticker-item"><span>ALERT:</span> Insider trading patterns detected in tech sector</div>
+            <div class="ticker-item"><span>EXCLUSIVE:</span> IMU sentiment spike detected across forums - 78% positive</div>
+            <div class="ticker-item"><span>MARKET SHIFT:</span> Algorithmic signals point to commodities surge in Q3</div>
+            <div class="ticker-item"><span>BREAKING:</span> Company Z shares plummet 15% amid undisclosed investigation</div>
+            <div class="ticker-item"><span>ALERT:</span> Insider trading patterns detected in tech sector</div>
+            <div class="ticker-item"><span>EXCLUSIVE:</span> IMU sentiment spike detected across forums - 78% positive</div>
+            <div class="ticker-item"><span>MARKET SHIFT:</span> Algorithmic signals point to commodities surge in Q3</div>
+        </div>
+    </div>
+
+    <!-- Articles Hero -->
+    <section class="articles-hero">
+        <div class="container">
+            <div class="articles-hero-content fade-in">
+                <h1>Market Intelligence Articles</h1>
+                <p>Exclusive insights and analysis that give our members an unprecedented edge in the market. Discover opportunities others miss and position yourself ahead of the crowd.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Articles Filter -->
+    <section class="articles-filter">
+        <div class="container">
+            <div class="filter-container">
+                <div class="filter-categories">
+                    <div class="filter-category active">All</div>
+                    <div class="filter-category">Analysis</div>
+                    <div class="filter-category">Hidden Gems</div>
+                    <div class="filter-category">Market Moves</div>
+                    <div class="filter-category">Insider</div>
+                    <div class="filter-category">Strategy</div>
+                </div>
+                <div class="filter-search">
+                    <i class="fas fa-search"></i>
+                    <input type="text" placeholder="Search articles...">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Articles Main Content -->
+    <section class="articles-main">
+        <div class="container">
+            <div class="articles-layout">
+                <div class="articles-list">
+                    <!-- Article 1 -->
+                    <div class="article-item slide-up">
+                        <img src="images/article1.jpg" alt="Top 5 Stocks" class="article-item-img" id="article1-placeholder">
+                        <div class="article-item-content">
+                            <div class="article-item-meta">
+                                <span class="article-item-tag">ANALYSIS</span>
+                                <span class="article-item-date">April 2, 2025</span>
+                            </div>
+                            <h3 class="article-item-title">Top 5 Stocks Wall Street Is Silently Accumulating</h3>
+                            <p class="article-item-excerpt">Our proprietary tracking algorithms have detected unusual institutional buying patterns in these 5 under-the-radar companies. The data reveals a pattern that typically precedes a major price movement.</p>
+                            <div class="article-item-footer">
+                                <div class="article-item-stats">
+                                    <div class="article-item-stat">
+                                        <i class="fas fa-eye"></i>
+                                        <span>2.4K</span>
+                                    </div>
+                                    <div class="article-item-stat">
+                                        <i class="fas fa-comment"></i>
+                                        <span>38</span>
+                                    </div>
+                                </div>
+                                <a href="#" class="read-more">Read Analysis <i class="fas fa-arrow-right"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Article 2 -->
+                    <div class="article-item slide-up">
+                        <img src="images/article2.jpg" alt="IMU Stock" class="article-item-img" id="article2-placeholder">
+                        <div class="article-item-content">
+                            <div class="article-item-meta">
+                                <span class="article-item-tag">HIDDEN GEM</span>
+                                <span class="article-item-date">April 1, 2025</span>
+                            </div>
+                            <h3 class="article-item-title">IMU: The Hidden Gem Wall Street Missed</h3>
+                            <p class="article-item-excerpt">While the masses focus elsewhere, our sentiment analysis shows a dramatic shift in IMU's market position. The data reveals a pattern that typically precedes a 30% surge. Our cross-reference engine has identified key catalysts that mainstream analysts have overlooked.</p>
+                            <div class="article-item-footer">
+                                <div class="article-item-stats">
+                                    <div class="article-item-stat">
+                                        <i class="fas fa-eye"></i>
+                                        <span>3.7K</span>
+                                    </div>
+                                    <div class="article-item-stat">
+                                        <i class="fas fa-comment"></i>
+                                        <span>52</span>
+                                    </div>
+                                </div>
+                                <a href="#" class="read-more">Read Analysis <i class="fas fa-arrow-right"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Article 3 -->
+                    <div class="article-item slide-up">
+                        <img src="images/article3.jpg" alt="Company Z Crisis" class="article-item-img" id="article3-placeholder">
+                        <div class="article-item-content">
+                            <div class="article-item-meta">
+                                <span class="article-item-tag">INSIDER</span>
+                                <span class="article-item-date">March 30, 2025</span>
+                            </div>
+                            <h3 class="article-item-title">Is Company Z Facing a Silent Crisis?</h3>
+                            <p class="article-item-excerpt">Our cross-reference engine has detected concerning patterns in Company Z's supply chain data that haven't hit mainstream analysis yet. Unusual executive movements and subtle shifts in offshore accounts suggest potential turbulence ahead.</p>
+                            <div class="article-item-footer">
+                                <div class="article-item-stats">
+                                    <div class="article-item-stat">
+                                        <i class="fas fa-eye"></i>
+                                        <span>5.2K</span>
+                                    </div>
+                                    <div class="article-item-stat">
+                                        <i class="fas fa-comment"></i>
+                                        <span>87</span>
+                                    </div>
+                                </div>
+                                <a href="#" class="read-more">Read Analysis <i class="fas fa-arrow-right"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Article 4 -->
+                    <div class="article-item slide-up">
+                        <img src="images/article4.jpg" alt="Forum Sentiment" class="article-item-img" id="article4-placeholder">
+                        <div class="article-item-content">
+                            <div class="article-item-meta">
+                                <span class="article-item-tag">MARKET MOVES</span>
+                                <span class="article-item-date">March 28, 2025</span>
+                            </div>
+                            <h3 class="article-item-title">Forum Sentiment: The Untapped Predictor of Market Moves</h3>
+                            <p class="article-item-excerpt">Our analysis of HotCopper and other investment forums reveals a consistent pattern: sentiment shifts precede price movements by an average of 3.2 days. Learn how our proprietary algorithm decodes these signals and how you can leverage this intelligence.</p>
+                            <div class="article-item-footer">
+                                <div class="article-item-stats">
+                                    <div class="article-item-stat">
+                                        <i class="fas fa-eye"></i>
+                                        <span>4.1K</span>
+                                    </div>
+                                    <div class="article-item-stat">
+                                        <i class="fas fa-comment"></i>
+                                        <span>63</span>
+                                    </div>
+                                </div>
+                                <a href="#" class="read-more">Read Analysis <i class="fas fa-arrow-right"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Article 5 -->
+                    <div class="article-item slide-up">
+                        <img src="images/article5.jpg" alt="AI Prediction" class="article-item-img" id="article5-placeholder">
+                        <div class="article-item-content">
+                            <div class="article-item-meta">
+                                <span class="article-item-tag">STRATEGY</span>
+                                <span class="article-item-date">March 25, 2025</span>
+                            </div>
+                            <h3 class="article-item-title">How Our AI Prediction Engine Achieved 85% Accuracy</h3>
+                            <p class="article-item-excerpt">A behind-the-scenes look at how Dr. Stahl's team developed the most accurate market prediction algorithm in existence. Learn about the quantum computing infrastructure, data harvesting techniques, and pattern recognition models that power our elite tools.</p>
+                            <div class="article-item-footer">
+                                <div class="article-item-stats">
+                                    <div class="article-item-stat">
+                                        <i class="fas fa-eye"></i>
+                                        <span>6.8K</span>
+                                    </div>
+                                    <div class="article-item-stat">
+                                        <i class="fas fa-comment"></i>
+                                        <span>112</span>
+                                    </div>
+                                </div>
+                                <a href="#" class="read-more">Read Analysis <i class="fas fa-arrow-right"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Pagination -->
+                    <div class="pagination">
+                        <div class="pagination-item"><i class="fas fa-chevron-left"></i></div>
+                        <div class="pagination-item active">1</div>
+                        <div class="pagination-item">2</div>
+                        <div class="pagination-item">3</div>
+                        <div class="pagination-item">...</div>
+                        <div class="pagination-item">10</div>
+                        <div class="pagination-item"><i class="fas fa-chevron-right"></i></div>
+                    </div>
+                </div>
+                
+                <!-- Sidebar -->
+                <div class="sidebar">
+                    <!-- Trending Articles Widget -->
+                    <div class="sidebar-widget">
+                        <h3 class="sidebar-widget-title">Trending Articles</h3>
+                        <div class="trending-list">
+                            <div class="trending-item">
+                                <div class="trending-number">01</div>
+                                <div class="trending-content">
+                                    <h4>The Dark Web Intelligence Revolution</h4>
+                                    <p>How elite traders leverage hidden data</p>
+                                </div>
+                            </div>
+                            <div class="trending-item">
+                                <div class="trending-number">02</div>
+                                <div class="trending-content">
+                                    <h4>Decoding Insider Trading Patterns</h4>
+                                    <p>Signals that precede major moves</p>
+                                </div>
+                            </div>
+                            <div class="trending-item">
+                                <div class="trending-number">03</div>
+                                <div class="trending-content">
+                                    <h4>The HotCopper Effect: Forum Manipulation</h4>
+                                    <p>How sentiment is engineered</p>
+                                </div>
+                            </div>
+                            <div class="trending-item">
+                                <div class="trending-number">04</div>
+                                <div class="trending-content">
+                                    <h4>Quantum Computing & Market Prediction</h4>
+                                    <p>The technology behind 85% accuracy</p>
+                                </div>
+                            </div>
+                            <div class="trending-item">
+                                <div class="trending-number">05</div>
+                                <div class="trending-content">
+                                    <h4>Supply Chain Intelligence: The Hidden Edge</h4>
+                                    <p>Spotting disruptions before markets react</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Market Movers Widget -->
+                    <div class="sidebar-widget">
+                        <h3 class="sidebar-widget-title">Market Movers</h3>
+                        <div class="market-movers">
+                            <div class="market-mover">
+                                <div class="market-mover-name">IMU</div>
+                                <div class="market-mover-change positive">+12.8%</div>
+                            </div>
+                            <div class="market-mover">
+                                <div class="market-mover-name">TECH</div>
+                                <div class="market-mover-change positive">+7.3%</div>
+                            </div>
+                            <div class="market-mover">
+                                <div class="market-mover-name">COMP-Z</div>
+                                <div class="market-mover-change negative">-15.2%</div>
+                            </div>
+                            <div class="market-mover">
+                                <div class="market-mover-name">QNTM</div>
+                                <div class="market-mover-change positive">+9.1%</div>
+                            </div>
+                            <div class="market-mover">
+                                <div class="market-mover-name">BLKC</div>
+                                <div class="market-mover-change positive">+5.6%</div>
+                            </div>
+                            <div class="market-mover">
+                                <div class="market-mover-name">SPLY</div>
+                                <div class="market-mover-change negative">-3.8%</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Newsletter Widget -->
+                    <div class="sidebar-widget">
+                        <h3 class="sidebar-widget-title">Elite Intelligence Briefing</h3>
+                        <p>Subscribe to receive Dr. Stahl's weekly market insights directly to your inbox.</p>
+                        <form class="newsletter-form">
+                            <input type="email" placeholder="Your email address" class="newsletter-input">
+                            <button type="submit" class="newsletter-btn">Subscribe</button>
+                        </form>
+                    </div>
+                    
+                    <!-- Premium Teaser Widget -->
+                    <div class="sidebar-widget">
+                        <h3 class="sidebar-widget-title">Unlock Full Access</h3>
+                        <p>Premium members get access to our complete intelligence suite, including AI predictions with 85% accuracy.</p>
+                        <a href="premium.html" class="newsletter-btn">Become Elite</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-about">
+                    <div class="footer-logo">
+                        <div class="logo-text">STAHL<span>INSIGHTS</span></div>
+                    </div>
+                    <p>Stahl Insights provides elite market intelligence through advanced algorithms, sentiment analysis, and predictive models that give our members an unprecedented edge.</p>
+                    <div class="social-links">
+                        <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-telegram-plane"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-discord"></i></a>
+                    </div>
+                </div>
+                <div class="footer-links-section">
+                    <h3 class="footer-heading">Quick Links</h3>
+                    <ul class="footer-links">
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="articles.html">Articles</a></li>
+                        <li><a href="dashboards.html">Dashboards</a></li>
+                        <li><a href="premium.html">Premium Access</a></li>
+                        <li><a href="about.html">About Dr. Stahl</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links-section">
+                    <h3 class="footer-heading">Resources</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Market Analysis</a></li>
+                        <li><a href="#">Sentiment Tracker</a></li>
+                        <li><a href="#">Deal Comparator</a></li>
+                        <li><a href="#">Forum Intelligence</a></li>
+                        <li><a href="#">Predictive Models</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links-section">
+                    <h3 class="footer-heading">Legal</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Terms of Service</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Disclaimer</a></li>
+                        <li><a href="#">Risk Disclosure</a></li>
+                        <li><a href="#">Contact Us</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Stahl Insights. All rights reserved. This is a fictional website created for demonstration purposes only.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script src="js/main.js"></script>
+    
+    <!-- Placeholder Script for Demo -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Create placeholders for article images
+            createPlaceholder('article1-placeholder', '100%', 200, '#111927');
+            createPlaceholder('article2-placeholder', '100%', 200, '#111927');
+            createPlaceholder('article3-placeholder', '100%', 200, '#111927');
+            createPlaceholder('article4-placeholder', '100%', 200, '#111927');
+            createPlaceholder('article5-placeholder', '100%', 200, '#111927');
+        });
+    </script>
+</body>
+</html>
