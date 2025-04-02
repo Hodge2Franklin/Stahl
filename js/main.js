@@ -308,41 +308,77 @@ function initDataRefresh() {
 
 // Article Filter Tabs Function
 function initArticleFilterTabs() {
+    console.log("Initializing article filter tabs");
     const filterCategories = document.querySelectorAll('.filter-category');
-    if (filterCategories.length === 0) return;
+    if (filterCategories.length === 0) {
+        console.log("No filter categories found");
+        return;
+    }
+    
+    console.log(`Found ${filterCategories.length} filter categories`);
+    
+    // Set the first tab (All) as active by default
+    if (filterCategories[0] && !filterCategories[0].classList.contains('active')) {
+        filterCategories[0].classList.add('active');
+    }
     
     const articleItems = document.querySelectorAll('.article-item');
+    console.log(`Found ${articleItems.length} article items`);
     
+    // Create a mapping of article items to their categories for faster lookup
+    const articleCategoryMap = new Map();
+    articleItems.forEach(article => {
+        const articleTag = article.querySelector('.article-item-tag');
+        if (articleTag) {
+            articleCategoryMap.set(article, articleTag.textContent.trim());
+        }
+    });
+    
+    // Function to filter articles based on selected category
+    function filterArticles(selectedCategory) {
+        console.log(`Filtering articles by category: ${selectedCategory}`);
+        
+        articleItems.forEach(article => {
+            const articleCategory = articleCategoryMap.get(article);
+            if (!articleCategory) return;
+            
+            if (selectedCategory === 'All' || selectedCategory === articleCategory) {
+                article.style.display = 'flex';
+                // Add animation for appearing items
+                article.style.opacity = '0';
+                article.style.transform = 'translateY(20px)';
+                setTimeout(() => {
+                    article.style.opacity = '1';
+                    article.style.transform = 'translateY(0)';
+                }, 50);
+            } else {
+                article.style.display = 'none';
+            }
+        });
+    }
+    
+    // Add click event listeners to each category tab
     filterCategories.forEach(category => {
-        category.addEventListener('click', function() {
+        category.addEventListener('click', function(e) {
+            e.preventDefault();
+            console.log(`Clicked on category: ${this.textContent.trim()}`);
+            
             // Update active class
             filterCategories.forEach(cat => cat.classList.remove('active'));
             this.classList.add('active');
             
             const selectedCategory = this.textContent.trim();
-            
-            // Filter articles based on selected category
-            articleItems.forEach(article => {
-                const articleTag = article.querySelector('.article-item-tag');
-                if (!articleTag) return;
-                
-                const articleCategory = articleTag.textContent.trim();
-                
-                if (selectedCategory === 'All' || selectedCategory === articleCategory) {
-                    article.style.display = 'flex';
-                    // Add animation for appearing items
-                    article.style.opacity = '0';
-                    article.style.transform = 'translateY(20px)';
-                    setTimeout(() => {
-                        article.style.opacity = '1';
-                        article.style.transform = 'translateY(0)';
-                    }, 50);
-                } else {
-                    article.style.display = 'none';
-                }
-            });
+            filterArticles(selectedCategory);
         });
     });
+    
+    // Initialize with the active category
+    const activeCategory = document.querySelector('.filter-category.active');
+    if (activeCategory) {
+        filterArticles(activeCategory.textContent.trim());
+    } else if (filterCategories[0]) {
+        filterArticles(filterCategories[0].textContent.trim());
+    }
 }
 
 // Dashboard Tabs Function
