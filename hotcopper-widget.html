@@ -1,0 +1,1806 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Hotcopper Advertising Widget | Stahl Insights</title>
+    <meta name="description" content="Stahl Insights Hotcopper advertising partnership - inject predictive insights into stock discussions with no upfront costs.">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* Hotcopper Widget Specific Styles */
+        .hotcopper-hero {
+            background-color: var(--bg-secondary);
+            padding: 8rem 0 5rem;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hotcopper-hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 30%, rgba(0, 200, 255, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 70%, rgba(54, 249, 197, 0.1) 0%, transparent 50%);
+            z-index: 0;
+        }
+        
+        .hotcopper-hero-content {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .hotcopper-hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .hotcopper-hero p {
+            font-size: 1.2rem;
+            margin-bottom: 2.5rem;
+            color: var(--text-primary);
+        }
+        
+        .hotcopper-section {
+            padding: 5rem 0;
+            background-color: var(--bg-primary);
+        }
+        
+        .hotcopper-container {
+            background-color: var(--bg-secondary);
+            border-radius: 8px;
+            padding: 2rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(0, 200, 255, 0.1);
+            margin-bottom: 3rem;
+        }
+        
+        .hotcopper-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .hotcopper-title {
+            font-size: 1.8rem;
+            margin-bottom: 0;
+        }
+        
+        .hotcopper-subtitle {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            margin-top: 0.5rem;
+        }
+        
+        .hotcopper-tabs {
+            display: flex;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            margin-bottom: 2rem;
+            overflow-x: auto;
+            scrollbar-width: none;
+        }
+        
+        .hotcopper-tabs::-webkit-scrollbar {
+            display: none;
+        }
+        
+        .hotcopper-tab {
+            padding: 1rem 2rem;
+            font-size: 1rem;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all var(--transition-speed) ease;
+            border-bottom: 2px solid transparent;
+            white-space: nowrap;
+        }
+        
+        .hotcopper-tab:hover {
+            color: var(--text-primary);
+        }
+        
+        .hotcopper-tab.active {
+            color: var(--accent-1);
+            border-bottom: 2px solid var(--accent-1);
+        }
+        
+        .hotcopper-content {
+            display: none;
+        }
+        
+        .hotcopper-content.active {
+            display: block;
+        }
+        
+        /* Widget Preview Section */
+        .widget-preview {
+            margin-bottom: 3rem;
+        }
+        
+        .widget-preview-title {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+        
+        .widget-container {
+            background-color: #F9F9F9;
+            border-radius: 8px;
+            padding: 1.5rem;
+            color: #333;
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        .hotcopper-header-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid #E0E0E0;
+            margin-bottom: 1rem;
+        }
+        
+        .hotcopper-logo {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .hotcopper-logo img {
+            width: 24px;
+            height: 24px;
+            border-radius: 4px;
+        }
+        
+        .hotcopper-logo-text {
+            font-weight: bold;
+            color: #FF6600;
+        }
+        
+        .hotcopper-post {
+            background-color: #FFFFFF;
+            border: 1px solid #E0E0E0;
+            border-radius: 4px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+        }
+        
+        .post-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+        }
+        
+        .post-user {
+            font-weight: bold;
+            color: #0066CC;
+        }
+        
+        .post-time {
+            font-size: 0.8rem;
+            color: #777;
+        }
+        
+        .post-content {
+            margin-bottom: 1rem;
+            line-height: 1.4;
+        }
+        
+        .post-ticker {
+            display: inline-block;
+            background-color: #F0F0F0;
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-weight: bold;
+            color: #0066CC;
+            margin-right: 0.5rem;
+        }
+        
+        .post-actions {
+            display: flex;
+            gap: 1rem;
+            font-size: 0.9rem;
+            color: #777;
+        }
+        
+        .post-action {
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+            cursor: pointer;
+        }
+        
+        .post-action:hover {
+            color: #0066CC;
+        }
+        
+        /* Stahl Widget */
+        .stahl-widget {
+            background: linear-gradient(135deg, #0A0E17, #111927);
+            border-radius: 4px;
+            padding: 1rem;
+            margin: 1rem 0;
+            color: #FFFFFF;
+            font-family: 'Inter', sans-serif;
+            border: 1px solid #00C8FF;
+            box-shadow: 0 0 10px rgba(0, 200, 255, 0.3);
+        }
+        
+        .stahl-widget-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .stahl-logo {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .stahl-logo-icon {
+            width: 20px;
+            height: 20px;
+            background-color: #00C8FF;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: bold;
+            color: #0A0E17;
+        }
+        
+        .stahl-logo-text {
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+        
+        .stahl-logo-text span {
+            color: #00C8FF;
+        }
+        
+        .stahl-prediction {
+            margin-bottom: 0.8rem;
+        }
+        
+        .prediction-title {
+            font-size: 1rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            color: #FFFFFF;
+        }
+        
+        .prediction-content {
+            font-size: 0.9rem;
+            line-height: 1.4;
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 0.5rem;
+        }
+        
+        .prediction-stats {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 0.8rem;
+        }
+        
+        .prediction-stat {
+            flex: 1;
+            text-align: center;
+            background-color: rgba(0, 0, 0, 0.2);
+            padding: 0.5rem;
+            border-radius: 4px;
+        }
+        
+        .stat-value {
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-bottom: 0.2rem;
+            font-family: 'JetBrains Mono', monospace;
+        }
+        
+        .stat-value.positive {
+            color: #36F9C5;
+        }
+        
+        .stat-value.negative {
+            color: #FF3A5E;
+        }
+        
+        .stat-label {
+            font-size: 0.7rem;
+            color: rgba(255, 255, 255, 0.6);
+        }
+        
+        .prediction-chart {
+            height: 60px;
+            margin-bottom: 0.8rem;
+            position: relative;
+        }
+        
+        .prediction-chart canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+        
+        .stahl-cta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 1rem;
+            padding-top: 0.5rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .stahl-unlock {
+            background: linear-gradient(90deg, #00C8FF, #36F9C5);
+            border: none;
+            border-radius: 4px;
+            padding: 0.5rem 1rem;
+            font-size: 0.8rem;
+            font-weight: bold;
+            color: #0A0E17;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .stahl-unlock:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 10px rgba(0, 200, 255, 0.3);
+        }
+        
+        .stahl-confidence {
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.6);
+        }
+        
+        .stahl-confidence span {
+            font-weight: bold;
+            color: #36F9C5;
+        }
+        
+        /* Widget Examples Section */
+        .widget-examples {
+            margin-bottom: 3rem;
+        }
+        
+        .examples-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .example-card {
+            background-color: rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+            padding: 1.5rem;
+            border: 1px solid rgba(0, 200, 255, 0.1);
+            transition: all var(--transition-speed) ease;
+        }
+        
+        .example-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            border-color: rgba(0, 200, 255, 0.3);
+        }
+        
+        .example-title {
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .example-title i {
+            color: var(--accent-1);
+        }
+        
+        .example-description {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+        
+        .example-preview {
+            background-color: #F9F9F9;
+            border-radius: 4px;
+            padding: 1rem;
+            color: #333;
+            font-family: Arial, sans-serif;
+            margin-bottom: 1rem;
+        }
+        
+        .example-ticker {
+            display: inline-block;
+            background-color: #F0F0F0;
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-weight: bold;
+            color: #0066CC;
+            margin-right: 0.5rem;
+        }
+        
+        .example-prediction {
+            background: linear-gradient(135deg, #0A0E17, #111927);
+            border-radius: 4px;
+            padding: 0.8rem;
+            color: #FFFFFF;
+            font-family: 'Inter', sans-serif;
+            border: 1px solid #00C8FF;
+            margin-top: 0.5rem;
+            font-size: 0.8rem;
+        }
+        
+        .example-stat {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+        }
+        
+        .example-stat-label {
+            color: rgba(255, 255, 255, 0.6);
+        }
+        
+        .example-stat-value {
+            font-weight: bold;
+        }
+        
+        .example-stat-value.positive {
+            color: #36F9C5;
+        }
+        
+        .example-stat-value.negative {
+            color: #FF3A5E;
+        }
+        
+        .example-cta {
+            font-size: 0.8rem;
+            color: #00C8FF;
+            text-align: center;
+            margin-top: 0.5rem;
+            cursor: pointer;
+        }
+        
+        /* Partnership Details Section */
+        .partnership-details {
+            margin-bottom: 3rem;
+        }
+        
+        .partnership-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .partnership-card {
+            background-color: rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+            padding: 1.5rem;
+            border: 1px solid rgba(0, 200, 255, 0.1);
+            transition: all var(--transition-speed) ease;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .partnership-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            border-color: rgba(0, 200, 255, 0.3);
+        }
+        
+        .partnership-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: rgba(0, 200, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+            color: var(--accent-1);
+        }
+        
+        .partnership-title {
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+        }
+        
+        .partnership-description {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+            flex-grow: 1;
+        }
+        
+        .partnership-stat {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+        
+        .partnership-stat-label {
+            color: var(--text-secondary);
+        }
+        
+        .partnership-stat-value {
+            font-family: var(--font-data);
+            font-weight: 600;
+            color: var(--accent-1);
+        }
+        
+        /* Implementation Section */
+        .implementation-section {
+            margin-bottom: 3rem;
+        }
+        
+        .implementation-steps {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .implementation-step {
+            background-color: rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+            padding: 1.5rem;
+            border: 1px solid rgba(0, 200, 255, 0.1);
+            display: flex;
+            gap: 1.5rem;
+        }
+        
+        .step-number {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: rgba(0, 200, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: var(--accent-1);
+            flex-shrink: 0;
+        }
+        
+        .step-content {
+            flex-grow: 1;
+        }
+        
+        .step-title {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .step-description {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+        
+        .implementation-cta {
+            text-align: center;
+            margin-top: 2rem;
+        }
+        
+        .implementation-btn {
+            display: inline-block;
+            padding: 1rem 2rem;
+            background: linear-gradient(90deg, var(--accent-1), var(--accent-3));
+            border: none;
+            border-radius: 4px;
+            font-size: 1rem;
+            font-weight: bold;
+            color: var(--bg-primary);
+            cursor: pointer;
+            transition: all var(--transition-speed) ease;
+        }
+        
+        .implementation-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 200, 255, 0.3);
+        }
+        
+        /* Revenue Section */
+        .revenue-section {
+            margin-bottom: 3rem;
+        }
+        
+        .revenue-chart {
+            height: 300px;
+            margin-bottom: 2rem;
+            position: relative;
+            background-color: rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+            padding: 1.5rem;
+            border: 1px solid rgba(0, 200, 255, 0.1);
+        }
+        
+        .revenue-chart canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+        
+        .revenue-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .revenue-stat {
+            background-color: rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+            padding: 1.5rem;
+            border: 1px solid rgba(0, 200, 255, 0.1);
+            text-align: center;
+        }
+        
+        .revenue-stat-value {
+            font-size: 2rem;
+            font-family: var(--font-data);
+            font-weight: 600;
+            color: var(--accent-1);
+            margin-bottom: 0.5rem;
+        }
+        
+        .revenue-stat-label {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+        
+        .revenue-details {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        /* FAQ Section */
+        .faq-section {
+            margin-bottom: 3rem;
+        }
+        
+        .faq-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        
+        .faq-item {
+            background-color: rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+            border: 1px solid rgba(0, 200, 255, 0.1);
+            overflow: hidden;
+        }
+        
+        .faq-question {
+            padding: 1.5rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .faq-question i {
+            color: var(--accent-1);
+            transition: all var(--transition-speed) ease;
+        }
+        
+        .faq-item.active .faq-question i {
+            transform: rotate(180deg);
+        }
+        
+        .faq-answer {
+            padding: 0 1.5rem 1.5rem;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+            display: none;
+        }
+        
+        .faq-item.active .faq-answer {
+            display: block;
+        }
+        
+        @media (max-width: 768px) {
+            .hotcopper-hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .hotcopper-hero p {
+                font-size: 1rem;
+            }
+            
+            .hotcopper-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+            
+            .hotcopper-tab {
+                padding: 0.8rem 1.5rem;
+            }
+            
+            .implementation-step {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .step-number {
+                margin: 0 auto;
+            }
+            
+            .step-content {
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="header-container">
+            <div class="logo">
+                <img src="images/logo.png" alt="Stahl Insights Logo" id="logo-placeholder">
+                <div class="logo-text">STAHL<span>INSIGHTS</span></div>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="articles.html">Articles</a></li>
+                    <li><a href="dashboards.html">Dashboards</a></li>
+                    <li><a href="premium.html">Premium</a></li>
+                    <li><a href="about.html">About</a></li>
+                </ul>
+            </nav>
+            <button class="login-btn">Login</button>
+        </div>
+    </header>
+
+    <!-- Breaking News Ticker -->
+    <div class="ticker-wrap">
+        <div class="ticker">
+            <div class="ticker-item"><span>BREAKING:</span> Company Z shares plummet 15% amid undisclosed investigation</div>
+            <div class="ticker-item"><span>ALERT:</span> Insider trading patterns detected in tech sector</div>
+            <div class="ticker-item"><span>EXCLUSIVE:</span> IMU sentiment spike detected across forums - 78% positive</div>
+            <div class="ticker-item"><span>MARKET SHIFT:</span> Algorithmic signals point to commodities surge in Q3</div>
+            <div class="ticker-item"><span>BREAKING:</span> Company Z shares plummet 15% amid undisclosed investigation</div>
+            <div class="ticker-item"><span>ALERT:</span> Insider trading patterns detected in tech sector</div>
+            <div class="ticker-item"><span>EXCLUSIVE:</span> IMU sentiment spike detected across forums - 78% positive</div>
+            <div class="ticker-item"><span>MARKET SHIFT:</span> Algorithmic signals point to commodities surge in Q3</div>
+        </div>
+    </div>
+
+    <!-- Hotcopper Advertising Hero -->
+    <section class="hotcopper-hero">
+        <div class="container">
+            <div class="hotcopper-hero-content fade-in">
+                <h1>Hotcopper Advertising Partnership</h1>
+                <p>Inject predictive insights into stock discussions with no upfront costs. Our revenue-sharing model ensures you only pay when our insights drive conversions.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Hotcopper Advertising Interface -->
+    <section class="hotcopper-section">
+        <div class="container">
+            <div class="hotcopper-container slide-up">
+                <div class="hotcopper-header">
+                    <div>
+                        <h2 class="hotcopper-title">Hotcopper Advertising Widget</h2>
+                        <p class="hotcopper-subtitle">Inject predictive insights into relevant stock discussions with confidence levels and trading guides</p>
+                    </div>
+                </div>
+                
+                <div class="hotcopper-tabs">
+                    <div class="hotcopper-tab active" data-tab="preview">Widget Preview</div>
+                    <div class="hotcopper-tab" data-tab="examples">Widget Examples</div>
+                    <div class="hotcopper-tab" data-tab="partnership">Partnership Details</div>
+                    <div class="hotcopper-tab" data-tab="implementation">Implementation</div>
+                    <div class="hotcopper-tab" data-tab="revenue">Revenue Model</div>
+                    <div class="hotcopper-tab" data-tab="faq">FAQ</div>
+                </div>
+                
+                <!-- Preview Tab Content -->
+                <div class="hotcopper-content active" id="preview-content">
+                    <div class="widget-preview">
+                        <h3 class="widget-preview-title">Live Widget Preview</h3>
+                        
+                        <div class="widget-container">
+                            <div class="hotcopper-header-bar">
+                                <div class="hotcopper-logo">
+                                    <div style="width: 24px; height: 24px; background-color: #FF6600; border-radius: 4px;"></div>
+                                    <div class="hotcopper-logo-text">HotCopper</div>
+                                </div>
+                                <div>ASX: IMU</div>
+                            </div>
+                            
+                            <div class="hotcopper-post">
+                                <div class="post-header">
+                                    <div class="post-user">MarketWatcher88</div>
+                                    <div class="post-time">Today at 10:32 AM</div>
+                                </div>
+                                <div class="post-content">
+                                    <p>Just saw the latest announcement from <span class="post-ticker">IMU</span> about their clinical trial results. Looks promising but I'm not sure how the market will react. Anyone else following this closely?</p>
+                                </div>
+                                <div class="post-actions">
+                                    <div class="post-action">
+                                        <i class="far fa-thumbs-up"></i>
+                                        <span>Like (23)</span>
+                                    </div>
+                                    <div class="post-action">
+                                        <i class="far fa-comment"></i>
+                                        <span>Reply</span>
+                                    </div>
+                                    <div class="post-action">
+                                        <i class="far fa-flag"></i>
+                                        <span>Report</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Stahl Widget -->
+                            <div class="stahl-widget">
+                                <div class="stahl-widget-header">
+                                    <div class="stahl-logo">
+                                        <div class="stahl-logo-icon">S</div>
+                                        <div class="stahl-logo-text">STAHL<span>INSIGHTS</span></div>
+                                    </div>
+                                    <div style="font-size: 0.8rem; color: rgba(255, 255, 255, 0.6);">Predictive Analysis</div>
+                                </div>
+                                
+                                <div class="stahl-prediction">
+                                    <div class="prediction-title">IMU Price Prediction</div>
+                                    <div class="prediction-content">Based on previous positive announcements, we predict the share price will increase on day 1, but rebound by 70% on day 2, with 82% certainty.</div>
+                                    
+                                    <div class="prediction-stats">
+                                        <div class="prediction-stat">
+                                            <div class="stat-value negative">-5.2%</div>
+                                            <div class="stat-label">Day 1</div>
+                                        </div>
+                                        <div class="prediction-stat">
+                                            <div class="stat-value positive">+70.3%</div>
+                                            <div class="stat-label">Day 2</div>
+                                        </div>
+                                        <div class="prediction-stat">
+                                            <div class="stat-value positive">+42.8%</div>
+                                            <div class="stat-label">Day 3</div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="prediction-chart" id="widget-chart"></div>
+                                </div>
+                                
+                                <div class="stahl-cta">
+                                    <button class="stahl-unlock">Unlock Trading Guide</button>
+                                    <div class="stahl-confidence">Confidence: <span>82%</span></div>
+                                </div>
+                            </div>
+                            
+                            <div class="hotcopper-post">
+                                <div class="post-header">
+                                    <div class="post-user">TradingPro2025</div>
+                                    <div class="post-time">Today at 10:45 AM</div>
+                                </div>
+                                <div class="post-content">
+                                    <p>I've been holding <span class="post-ticker">IMU</span> for months now. The trial results are better than expected. This could be the catalyst we've been waiting for. Looking forward to seeing how it plays out this week.</p>
+                                </div>
+                                <div class="post-actions">
+                                    <div class="post-action">
+                                        <i class="far fa-thumbs-up"></i>
+                                        <span>Like (17)</span>
+                                    </div>
+                                    <div class="post-action">
+                                        <i class="far fa-comment"></i>
+                                        <span>Reply</span>
+                                    </div>
+                                    <div class="post-action">
+                                        <i class="far fa-flag"></i>
+                                        <span>Report</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Examples Tab Content -->
+                <div class="hotcopper-content" id="examples-content">
+                    <div class="widget-examples">
+                        <div class="examples-grid">
+                            <!-- Example Card 1 -->
+                            <div class="example-card">
+                                <h3 class="example-title">
+                                    <i class="fas fa-chart-line"></i>
+                                    <span>News Trading Guide</span>
+                                </h3>
+                                <p class="example-description">Predict price movements following significant news announcements with day-by-day forecasts and confidence levels.</p>
+                                
+                                <div class="example-preview">
+                                    <span class="example-ticker">IMU</span> Clinical trial results discussion
+                                    
+                                    <div class="example-prediction">
+                                        <div class="example-stat">
+                                            <span class="example-stat-label">Day 1:</span>
+                                            <span class="example-stat-value negative">-5.2%</span>
+                                        </div>
+                                        <div class="example-stat">
+                                            <span class="example-stat-label">Day 2:</span>
+                                            <span class="example-stat-value positive">+70.3%</span>
+                                        </div>
+                                        <div class="example-stat">
+                                            <span class="example-stat-label">Confidence:</span>
+                                            <span class="example-stat-value">82%</span>
+                                        </div>
+                                        <div class="example-cta">Click to unlock your day 1-3 news trading guide</div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Example Card 2 -->
+                            <div class="example-card">
+                                <h3 class="example-title">
+                                    <i class="fas fa-bullseye"></i>
+                                    <span>Price Target Analysis</span>
+                                </h3>
+                                <p class="example-description">Provide detailed price target analysis based on technical indicators, sentiment analysis, and historical patterns.</p>
+                                
+                                <div class="example-preview">
+                                    <span class="example-ticker">TECH</span> Earnings discussion
+                                    
+                                    <div class="example-prediction">
+                                        <div class="example-stat">
+                                            <span class="example-stat-label">Current:</span>
+                                            <span class="example-stat-value">$128.75</span>
+                                        </div>
+                                        <div class="example-stat">
+                                            <span class="example-stat-label">Target:</span>
+                                            <span class="example-stat-value positive">$157.30</span>
+                                        </div>
+                                        <div class="example-stat">
+                                            <span class="example-stat-label">Timeframe:</span>
+                                            <span class="example-stat-value">30 days</span>
+                                        </div>
+                                        <div class="example-cta">Click to unlock your price target analysis</div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Example Card 3 -->
+                            <div class="example-card">
+                                <h3 class="example-title">
+                                    <i class="fas fa-exclamation-triangle"></i>
+                                    <span>Risk Alert</span>
+                                </h3>
+                                <p class="example-description">Warn users about potential risks and red flags detected in company data, insider trading patterns, or sentiment shifts.</p>
+                                
+                                <div class="example-preview">
+                                    <span class="example-ticker">COMP-Z</span> General discussion
+                                    
+                                    <div class="example-prediction">
+                                        <div class="example-stat">
+                                            <span class="example-stat-label">Risk Level:</span>
+                                            <span class="example-stat-value negative">High</span>
+                                        </div>
+                                        <div class="example-stat">
+                                            <span class="example-stat-label">Concern:</span>
+                                            <span class="example-stat-value">Supply Chain</span>
+                                        </div>
+                                        <div class="example-stat">
+                                            <span class="example-stat-label">Confidence:</span>
+                                            <span class="example-stat-value">91%</span>
+                                        </div>
+                                        <div class="example-cta">Click to unlock your risk assessment report</div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Example Card 4 -->
+                            <div class="example-card">
+                                <h3 class="example-title">
+                                    <i class="fas fa-lightbulb"></i>
+                                    <span>Hidden Opportunity</span>
+                                </h3>
+                                <p class="example-description">Highlight overlooked opportunities based on proprietary data analysis and pattern recognition algorithms.</p>
+                                
+                                <div class="example-preview">
+                                    <span class="example-ticker">QNTM</span> Patent filing discussion
+                                    
+                                    <div class="example-prediction">
+                                        <div class="example-stat">
+                                            <span class="example-stat-label">Opportunity:</span>
+                                            <span class="example-stat-value positive">Strong</span>
+                                        </div>
+                                        <div class="example-stat">
+                                            <span class="example-stat-label">Potential:</span>
+                                            <span class="example-stat-value positive">+35.8%</span>
+                                        </div>
+                                        <div class="example-stat">
+                                            <span class="example-stat-label">Timeframe:</span>
+                                            <span class="example-stat-value">60 days</span>
+                                        </div>
+                                        <div class="example-cta">Click to unlock your opportunity analysis</div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Example Card 5 -->
+                            <div class="example-card">
+                                <h3 class="example-title">
+                                    <i class="fas fa-chart-pie"></i>
+                                    <span>Sentiment Analysis</span>
+                                </h3>
+                                <p class="example-description">Provide detailed sentiment analysis across multiple platforms with predictive price impact assessment.</p>
+                                
+                                <div class="example-preview">
+                                    <span class="example-ticker">BLKC</span> Product launch discussion
+                                    
+                                    <div class="example-prediction">
+                                        <div class="example-stat">
+                                            <span class="example-stat-label">Sentiment:</span>
+                                            <span class="example-stat-value positive">87% Positive</span>
+                                        </div>
+                                        <div class="example-stat">
+                                            <span class="example-stat-label">Volume:</span>
+                                            <span class="example-stat-value positive">+342%</span>
+                                        </div>
+                                        <div class="example-stat">
+                                            <span class="example-stat-label">Price Impact:</span>
+                                            <span class="example-stat-value positive">Strong</span>
+                                        </div>
+                                        <div class="example-cta">Click to unlock your sentiment report</div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Example Card 6 -->
+                            <div class="example-card">
+                                <h3 class="example-title">
+                                    <i class="fas fa-user-secret"></i>
+                                    <span>Insider Activity Alert</span>
+                                </h3>
+                                <p class="example-description">Alert users to significant insider buying or selling activity with historical context and predictive analysis.</p>
+                                
+                                <div class="example-preview">
+                                    <span class="example-ticker">CRYP</span> Management discussion
+                                    
+                                    <div class="example-prediction">
+                                        <div class="example-stat">
+                                            <span class="example-stat-label">Activity:</span>
+                                            <span class="example-stat-value">Insider Buying</span>
+                                        </div>
+                                        <div class="example-stat">
+                                            <span class="example-stat-label">Volume:</span>
+                                            <span class="example-stat-value positive">$2.7M</span>
+                                        </div>
+                                        <div class="example-stat">
+                                            <span class="example-stat-label">Signal Strength:</span>
+                                            <span class="example-stat-value positive">Very Strong</span>
+                                        </div>
+                                        <div class="example-cta">Click to unlock your insider activity report</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Partnership Tab Content -->
+                <div class="hotcopper-content" id="partnership-content">
+                    <div class="partnership-details">
+                        <div class="partnership-grid">
+                            <!-- Partnership Card 1 -->
+                            <div class="partnership-card">
+                                <div class="partnership-icon">
+                                    <i class="fas fa-handshake"></i>
+                                </div>
+                                <h3 class="partnership-title">Revenue Sharing Model</h3>
+                                <p class="partnership-description">Our partnership operates on a revenue sharing model with no upfront costs. We split revenue from sign-ups generated through the widget, creating a risk-free opportunity for both parties.</p>
+                                <div class="partnership-stat">
+                                    <span class="partnership-stat-label">Revenue Split:</span>
+                                    <span class="partnership-stat-value">50/50</span>
+                                </div>
+                                <div class="partnership-stat">
+                                    <span class="partnership-stat-label">Minimum Term:</span>
+                                    <span class="partnership-stat-value">6 Months</span>
+                                </div>
+                                <div class="partnership-stat">
+                                    <span class="partnership-stat-label">Payment Cycle:</span>
+                                    <span class="partnership-stat-value">Monthly</span>
+                                </div>
+                            </div>
+                            
+                            <!-- Partnership Card 2 -->
+                            <div class="partnership-card">
+                                <div class="partnership-icon">
+                                    <i class="fas fa-chart-bar"></i>
+                                </div>
+                                <h3 class="partnership-title">Performance Metrics</h3>
+                                <p class="partnership-description">Our widgets consistently outperform traditional advertising methods, delivering higher engagement rates and conversion rates across all metrics.</p>
+                                <div class="partnership-stat">
+                                    <span class="partnership-stat-label">Click-Through Rate:</span>
+                                    <span class="partnership-stat-value">12.7%</span>
+                                </div>
+                                <div class="partnership-stat">
+                                    <span class="partnership-stat-label">Conversion Rate:</span>
+                                    <span class="partnership-stat-value">8.3%</span>
+                                </div>
+                                <div class="partnership-stat">
+                                    <span class="partnership-stat-label">User Engagement:</span>
+                                    <span class="partnership-stat-value">+215%</span>
+                                </div>
+                            </div>
+                            
+                            <!-- Partnership Card 3 -->
+                            <div class="partnership-card">
+                                <div class="partnership-icon">
+                                    <i class="fas fa-bullseye"></i>
+                                </div>
+                                <h3 class="partnership-title">Targeting Capabilities</h3>
+                                <p class="partnership-description">Our advanced targeting system ensures widgets are displayed only in relevant discussions, maximizing impact and minimizing user disruption.</p>
+                                <div class="partnership-stat">
+                                    <span class="partnership-stat-label">Relevance Score:</span>
+                                    <span class="partnership-stat-value">92%</span>
+                                </div>
+                                <div class="partnership-stat">
+                                    <span class="partnership-stat-label">Ticker Matching:</span>
+                                    <span class="partnership-stat-value">100%</span>
+                                </div>
+                                <div class="partnership-stat">
+                                    <span class="partnership-stat-label">Content Analysis:</span>
+                                    <span class="partnership-stat-value">Advanced</span>
+                                </div>
+                            </div>
+                            
+                            <!-- Partnership Card 4 -->
+                            <div class="partnership-card">
+                                <div class="partnership-icon">
+                                    <i class="fas fa-brain"></i>
+                                </div>
+                                <h3 class="partnership-title">Predictive Technology</h3>
+                                <p class="partnership-description">Our proprietary algorithms analyze vast amounts of data to generate accurate predictions that provide real value to users, driving engagement and conversions.</p>
+                                <div class="partnership-stat">
+                                    <span class="partnership-stat-label">Prediction Accuracy:</span>
+                                    <span class="partnership-stat-value">78.3%</span>
+                                </div>
+                                <div class="partnership-stat">
+                                    <span class="partnership-stat-label">Data Sources:</span>
+                                    <span class="partnership-stat-value">200+</span>
+                                </div>
+                                <div class="partnership-stat">
+                                    <span class="partnership-stat-label">Update Frequency:</span>
+                                    <span class="partnership-stat-value">Real-time</span>
+                                </div>
+                            </div>
+                            
+                            <!-- Partnership Card 5 -->
+                            <div class="partnership-card">
+                                <div class="partnership-icon">
+                                    <i class="fas fa-user-shield"></i>
+                                </div>
+                                <h3 class="partnership-title">User Experience</h3>
+                                <p class="partnership-description">Our widgets are designed to enhance the user experience by providing valuable insights that complement the discussion, rather than disrupting it.</p>
+                                <div class="partnership-stat">
+                                    <span class="partnership-stat-label">User Satisfaction:</span>
+                                    <span class="partnership-stat-value">92%</span>
+                                </div>
+                                <div class="partnership-stat">
+                                    <span class="partnership-stat-label">Complaint Rate:</span>
+                                    <span class="partnership-stat-value">0.3%</span>
+                                </div>
+                                <div class="partnership-stat">
+                                    <span class="partnership-stat-label">Return Users:</span>
+                                    <span class="partnership-stat-value">87%</span>
+                                </div>
+                            </div>
+                            
+                            <!-- Partnership Card 6 -->
+                            <div class="partnership-card">
+                                <div class="partnership-icon">
+                                    <i class="fas fa-cogs"></i>
+                                </div>
+                                <h3 class="partnership-title">Technical Integration</h3>
+                                <p class="partnership-description">Our seamless integration process requires minimal technical resources from your team, with our experts handling the implementation from start to finish.</p>
+                                <div class="partnership-stat">
+                                    <span class="partnership-stat-label">Integration Time:</span>
+                                    <span class="partnership-stat-value">48 Hours</span>
+                                </div>
+                                <div class="partnership-stat">
+                                    <span class="partnership-stat-label">Technical Support:</span>
+                                    <span class="partnership-stat-value">24/7</span>
+                                </div>
+                                <div class="partnership-stat">
+                                    <span class="partnership-stat-label">Maintenance:</span>
+                                    <span class="partnership-stat-value">Fully Managed</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Implementation Tab Content -->
+                <div class="hotcopper-content" id="implementation-content">
+                    <div class="implementation-section">
+                        <div class="implementation-steps">
+                            <!-- Step 1 -->
+                            <div class="implementation-step">
+                                <div class="step-number">1</div>
+                                <div class="step-content">
+                                    <h3 class="step-title">Partnership Agreement</h3>
+                                    <p class="step-description">We begin with a simple partnership agreement that outlines the revenue sharing model, terms, and conditions. This agreement is designed to be straightforward and mutually beneficial, with no hidden clauses or complex terms.</p>
+                                </div>
+                            </div>
+                            
+                            <!-- Step 2 -->
+                            <div class="implementation-step">
+                                <div class="step-number">2</div>
+                                <div class="step-content">
+                                    <h3 class="step-title">Technical Integration</h3>
+                                    <p class="step-description">Our technical team handles the integration process, requiring minimal input from your developers. We provide a simple JavaScript snippet that can be added to your forum templates, which dynamically loads our widget content based on the discussion context.</p>
+                                </div>
+                            </div>
+                            
+                            <!-- Step 3 -->
+                            <div class="implementation-step">
+                                <div class="step-number">3</div>
+                                <div class="step-content">
+                                    <h3 class="step-title">Content Customization</h3>
+                                    <p class="step-description">We work with you to customize the widget appearance and content to match your platform's design and user experience guidelines. This ensures the widgets feel like a natural extension of your forum rather than intrusive advertising.</p>
+                                </div>
+                            </div>
+                            
+                            <!-- Step 4 -->
+                            <div class="implementation-step">
+                                <div class="step-number">4</div>
+                                <div class="step-content">
+                                    <h3 class="step-title">Testing Phase</h3>
+                                    <p class="step-description">Before full deployment, we conduct a testing phase on a limited number of discussions to gather user feedback and performance metrics. This allows us to fine-tune the targeting and content for optimal results.</p>
+                                </div>
+                            </div>
+                            
+                            <!-- Step 5 -->
+                            <div class="implementation-step">
+                                <div class="step-number">5</div>
+                                <div class="step-content">
+                                    <h3 class="step-title">Full Deployment</h3>
+                                    <p class="step-description">Once testing is complete and any necessary adjustments are made, we proceed with full deployment across your platform. Our system automatically identifies relevant discussions and injects the appropriate widget content in real-time.</p>
+                                </div>
+                            </div>
+                            
+                            <!-- Step 6 -->
+                            <div class="implementation-step">
+                                <div class="step-number">6</div>
+                                <div class="step-content">
+                                    <h3 class="step-title">Ongoing Optimization</h3>
+                                    <p class="step-description">Our team continuously monitors performance metrics and user feedback to optimize the widget content and targeting. We provide regular reports on key metrics and work with you to maximize revenue and user satisfaction.</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="implementation-cta">
+                            <button class="implementation-btn">Start Implementation Process</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Revenue Tab Content -->
+                <div class="hotcopper-content" id="revenue-content">
+                    <div class="revenue-section">
+                        <div class="revenue-chart" id="revenue-chart"></div>
+                        
+                        <div class="revenue-stats">
+                            <div class="revenue-stat">
+                                <div class="revenue-stat-value">50/50</div>
+                                <div class="revenue-stat-label">Revenue Split</div>
+                            </div>
+                            <div class="revenue-stat">
+                                <div class="revenue-stat-value">$0</div>
+                                <div class="revenue-stat-label">Upfront Cost</div>
+                            </div>
+                            <div class="revenue-stat">
+                                <div class="revenue-stat-value">8.3%</div>
+                                <div class="revenue-stat-label">Conversion Rate</div>
+                            </div>
+                            <div class="revenue-stat">
+                                <div class="revenue-stat-value">$127</div>
+                                <div class="revenue-stat-label">Avg. Revenue Per Conversion</div>
+                            </div>
+                        </div>
+                        
+                        <p class="revenue-details">Our revenue sharing model is designed to align our interests with yours. We only generate revenue when our widgets successfully convert users into Stahl Insights subscribers. This ensures we're constantly optimizing for maximum performance and user satisfaction. The model is completely transparent, with detailed reporting and monthly payments.</p>
+                    </div>
+                </div>
+                
+                <!-- FAQ Tab Content -->
+                <div class="hotcopper-content" id="faq-content">
+                    <div class="faq-section">
+                        <div class="faq-list">
+                            <!-- FAQ Item 1 -->
+                            <div class="faq-item active">
+                                <div class="faq-question">
+                                    <span>How accurate are the predictions in the widgets?</span>
+                                    <i class="fas fa-chevron-down"></i>
+                                </div>
+                                <div class="faq-answer">
+                                    <p>Our predictions are based on sophisticated algorithms that analyze vast amounts of data, including historical price movements, sentiment analysis across multiple platforms, insider trading patterns, and technical indicators. Our overall accuracy rate is 78.3%, with each prediction including a confidence level to help users gauge reliability. We continuously refine our algorithms based on performance data to improve accuracy over time.</p>
+                                </div>
+                            </div>
+                            
+                            <!-- FAQ Item 2 -->
+                            <div class="faq-item">
+                                <div class="faq-question">
+                                    <span>How is revenue calculated and distributed?</span>
+                                    <i class="fas fa-chevron-down"></i>
+                                </div>
+                                <div class="faq-answer">
+                                    <p>Revenue is calculated based on the number of users who sign up for Stahl Insights through the widgets displayed on your platform. We track these conversions using unique referral codes embedded in each widget. The revenue is split 50/50 between our companies, with payments distributed monthly. We provide detailed reports showing all conversions, revenue generated, and your share of the proceeds.</p>
+                                </div>
+                            </div>
+                            
+                            <!-- FAQ Item 3 -->
+                            <div class="faq-item">
+                                <div class="faq-question">
+                                    <span>Will the widgets affect page load times?</span>
+                                    <i class="fas fa-chevron-down"></i>
+                                </div>
+                                <div class="faq-answer">
+                                    <p>No, our widgets are designed to load asynchronously and have minimal impact on page load times. The initial JavaScript snippet is lightweight (under 10KB) and the widget content is loaded only after the main page content has loaded. We also use lazy loading techniques to ensure the widgets only load when they're about to enter the viewport. Our testing shows an average impact of less than 100ms on total page load time.</p>
+                                </div>
+                            </div>
+                            
+                            <!-- FAQ Item 4 -->
+                            <div class="faq-item">
+                                <div class="faq-question">
+                                    <span>How do you ensure the widgets are relevant to the discussion?</span>
+                                    <i class="fas fa-chevron-down"></i>
+                                </div>
+                                <div class="faq-answer">
+                                    <p>Our targeting system analyzes the content of each discussion thread to determine relevance. We look at stock tickers mentioned, discussion topics, sentiment, and user engagement patterns. Widgets are only displayed when our system determines a high relevance score (minimum 85%). This ensures users see predictions and insights that are directly related to the stocks and topics they're discussing, maximizing engagement and minimizing disruption.</p>
+                                </div>
+                            </div>
+                            
+                            <!-- FAQ Item 5 -->
+                            <div class="faq-item">
+                                <div class="faq-question">
+                                    <span>What happens if users complain about the widgets?</span>
+                                    <i class="fas fa-chevron-down"></i>
+                                </div>
+                                <div class="faq-answer">
+                                    <p>We take user experience very seriously and have designed our widgets to be valuable additions to discussions rather than disruptive elements. Our current complaint rate is just 0.3%, significantly lower than industry averages for advertising content. However, if users do complain, we have a rapid response system in place. We can adjust targeting parameters, modify content, or even temporarily disable widgets in specific sections if necessary. We work closely with our partners to ensure user satisfaction remains high.</p>
+                                </div>
+                            </div>
+                            
+                            <!-- FAQ Item 6 -->
+                            <div class="faq-item">
+                                <div class="faq-question">
+                                    <span>Can we customize the appearance of the widgets?</span>
+                                    <i class="fas fa-chevron-down"></i>
+                                </div>
+                                <div class="faq-answer">
+                                    <p>Yes, we offer extensive customization options to ensure the widgets match your platform's design aesthetic. While we maintain certain branding elements to establish trust and recognition, we can adjust colors, fonts, sizing, and layout to create a seamless integration with your site. During the implementation phase, our design team will work with you to create a custom widget template that aligns with your brand guidelines while maintaining the effectiveness of the content.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-about">
+                    <div class="footer-logo">
+                        <div class="logo-text">STAHL<span>INSIGHTS</span></div>
+                    </div>
+                    <p>Stahl Insights provides elite market intelligence through advanced algorithms, sentiment analysis, and predictive models that give our members an unprecedented edge.</p>
+                    <div class="social-links">
+                        <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-telegram-plane"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-discord"></i></a>
+                    </div>
+                </div>
+                <div class="footer-links-section">
+                    <h3 class="footer-heading">Quick Links</h3>
+                    <ul class="footer-links">
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="articles.html">Articles</a></li>
+                        <li><a href="dashboards.html">Dashboards</a></li>
+                        <li><a href="premium.html">Premium Access</a></li>
+                        <li><a href="about.html">About Dr. Stahl</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links-section">
+                    <h3 class="footer-heading">Resources</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Market Analysis</a></li>
+                        <li><a href="#">Sentiment Tracker</a></li>
+                        <li><a href="#">Deal Comparator</a></li>
+                        <li><a href="#">Forum Intelligence</a></li>
+                        <li><a href="#">Predictive Models</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links-section">
+                    <h3 class="footer-heading">Legal</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Terms of Service</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Disclaimer</a></li>
+                        <li><a href="#">Risk Disclosure</a></li>
+                        <li><a href="#">Contact Us</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Stahl Insights. All rights reserved. This is a fictional website created for demonstration purposes only.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script src="js/main.js"></script>
+    
+    <!-- Hotcopper Widget Script -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Tab switching functionality
+            const tabs = document.querySelectorAll('.hotcopper-tab');
+            const contents = document.querySelectorAll('.hotcopper-content');
+            
+            tabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    const target = this.getAttribute('data-tab');
+                    
+                    // Update active tab
+                    tabs.forEach(t => t.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // Show corresponding content
+                    contents.forEach(content => {
+                        content.classList.remove('active');
+                        if (content.id === target + '-content') {
+                            content.classList.add('active');
+                        }
+                    });
+                });
+            });
+            
+            // Create widget chart
+            createWidgetChart();
+            
+            // Create revenue chart
+            createRevenueChart();
+            
+            // FAQ functionality
+            const faqItems = document.querySelectorAll('.faq-item');
+            faqItems.forEach(item => {
+                const question = item.querySelector('.faq-question');
+                question.addEventListener('click', function() {
+                    item.classList.toggle('active');
+                });
+            });
+            
+            // Widget unlock button
+            const unlockBtn = document.querySelector('.stahl-unlock');
+            if (unlockBtn) {
+                unlockBtn.addEventListener('click', function() {
+                    alert('In a complete implementation, this would redirect users to a sign-up page for Stahl Insights to unlock the trading guide.');
+                });
+            }
+            
+            // Implementation button
+            const implementBtn = document.querySelector('.implementation-btn');
+            if (implementBtn) {
+                implementBtn.addEventListener('click', function() {
+                    alert('In a complete implementation, this would open a contact form to start the implementation process.');
+                });
+            }
+            
+            // Example CTAs
+            const exampleCtas = document.querySelectorAll('.example-cta');
+            exampleCtas.forEach(cta => {
+                cta.addEventListener('click', function() {
+                    alert('In a complete implementation, this would redirect users to a sign-up page for Stahl Insights to unlock the specific report or guide.');
+                });
+            });
+        });
+        
+        // Function to create widget chart
+        function createWidgetChart() {
+            const container = document.getElementById('widget-chart');
+            if (!container) return;
+            
+            const canvas = document.createElement('canvas');
+            canvas.width = container.offsetWidth;
+            canvas.height = container.offsetHeight;
+            const ctx = canvas.getContext('2d');
+            
+            // Background
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.2)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            // Generate prediction data points
+            const predictionPoints = [];
+            const numPoints = 30; // 10 points per day
+            let currentY = canvas.height * 0.5; // Start at middle
+            
+            for (let i = 0; i < numPoints; i++) {
+                const x = (i / (numPoints - 1)) * canvas.width;
+                
+                // Generate next point with specific pattern
+                let randomFactor = Math.random() * 5 - 2.5; // Small random between -2.5 and 2.5
+                let trendFactor = 0;
+                
+                // Day 1: Slight decline
+                if (i < numPoints / 3) {
+                    trendFactor = 1; // Upward (remember Y is inverted)
+                }
+                // Day 2: Sharp increase
+                else if (i < numPoints * 2/3) {
+                    trendFactor = -5; // Downward (remember Y is inverted)
+                }
+                // Day 3: Moderate increase
+                else {
+                    trendFactor = -2; // Downward (remember Y is inverted)
+                }
+                
+                currentY = Math.max(5, Math.min(canvas.height - 5, currentY + randomFactor + trendFactor));
+                
+                predictionPoints.push({ x, y: currentY });
+            }
+            
+            // Draw prediction line
+            ctx.strokeStyle = '#00C8FF';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.moveTo(predictionPoints[0].x, predictionPoints[0].y);
+            
+            for (let i = 1; i < predictionPoints.length; i++) {
+                ctx.lineTo(predictionPoints[i].x, predictionPoints[i].y);
+            }
+            
+            ctx.stroke();
+            
+            // Add subtle glow effect
+            ctx.shadowColor = '#00C8FF';
+            ctx.shadowBlur = 5;
+            ctx.stroke();
+            ctx.shadowBlur = 0;
+            
+            // Add day markers
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.2)';
+            ctx.lineWidth = 1;
+            ctx.setLineDash([5, 5]);
+            
+            // Day 1-2 divider
+            ctx.beginPath();
+            ctx.moveTo(canvas.width / 3, 0);
+            ctx.lineTo(canvas.width / 3, canvas.height);
+            ctx.stroke();
+            
+            // Day 2-3 divider
+            ctx.beginPath();
+            ctx.moveTo(canvas.width * 2/3, 0);
+            ctx.lineTo(canvas.width * 2/3, canvas.height);
+            ctx.stroke();
+            
+            ctx.setLineDash([]);
+            
+            // Add day labels
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.5)';
+            ctx.font = '10px Arial';
+            ctx.textAlign = 'center';
+            
+            ctx.fillText('Day 1', canvas.width / 6, canvas.height - 5);
+            ctx.fillText('Day 2', canvas.width / 2, canvas.height - 5);
+            ctx.fillText('Day 3', canvas.width * 5/6, canvas.height - 5);
+            
+            container.appendChild(canvas);
+        }
+        
+        // Function to create revenue chart
+        function createRevenueChart() {
+            const container = document.getElementById('revenue-chart');
+            if (!container) return;
+            
+            const canvas = document.createElement('canvas');
+            canvas.width = container.offsetWidth;
+            canvas.height = container.offsetHeight;
+            const ctx = canvas.getContext('2d');
+            
+            // Background
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.2)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            // Grid lines
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.05)';
+            ctx.lineWidth = 1;
+            
+            // Horizontal grid lines
+            for (let i = 0; i <= 4; i++) {
+                const y = (i / 4) * canvas.height;
+                ctx.beginPath();
+                ctx.moveTo(0, y);
+                ctx.lineTo(canvas.width, y);
+                ctx.stroke();
+                
+                // Value labels
+                const value = Math.round((4 - i) * 25);
+                ctx.fillStyle = 'rgba(255, 255, 255, 0.5)';
+                ctx.font = '12px Arial';
+                ctx.textAlign = 'left';
+                ctx.fillText('$' + value + 'k', 10, y + 15);
+            }
+            
+            // Vertical grid lines (months)
+            const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+            for (let i = 0; i <= 12; i++) {
+                const x = (i / 12) * canvas.width;
+                ctx.beginPath();
+                ctx.moveTo(x, 0);
+                ctx.lineTo(x, canvas.height);
+                ctx.stroke();
+                
+                // Month labels
+                if (i < 12) {
+                    ctx.fillStyle = 'rgba(255, 255, 255, 0.5)';
+                    ctx.font = '12px Arial';
+                    ctx.textAlign = 'center';
+                    ctx.fillText(months[i], x + (canvas.width / 24), canvas.height - 10);
+                }
+            }
+            
+            // Generate partner revenue data
+            const partnerPoints = [];
+            const numPoints = 12; // One point per month
+            let currentY = canvas.height * 0.9; // Start low
+            
+            for (let i = 0; i < numPoints; i++) {
+                const x = (i / (numPoints - 1)) * canvas.width;
+                
+                // Generate next point with upward trend
+                const randomFactor = Math.random() * 10 - 5; // Random between -5 and 5
+                const trendFactor = -10; // Strong upward trend (remember Y is inverted)
+                currentY = Math.max(canvas.height * 0.1, Math.min(canvas.height * 0.9, currentY + randomFactor + trendFactor));
+                
+                partnerPoints.push({ x, y: currentY });
+            }
+            
+            // Draw partner revenue line
+            ctx.strokeStyle = '#36F9C5';
+            ctx.lineWidth = 3;
+            ctx.beginPath();
+            ctx.moveTo(partnerPoints[0].x, partnerPoints[0].y);
+            
+            for (let i = 1; i < partnerPoints.length; i++) {
+                ctx.lineTo(partnerPoints[i].x, partnerPoints[i].y);
+            }
+            
+            ctx.stroke();
+            
+            // Add subtle glow effect
+            ctx.shadowColor = '#36F9C5';
+            ctx.shadowBlur = 10;
+            ctx.stroke();
+            ctx.shadowBlur = 0;
+            
+            // Add area fill
+            const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
+            gradient.addColorStop(0, 'rgba(54, 249, 197, 0.2)');
+            gradient.addColorStop(1, 'rgba(54, 249, 197, 0.0)');
+            
+            ctx.fillStyle = gradient;
+            ctx.beginPath();
+            ctx.moveTo(partnerPoints[0].x, canvas.height);
+            ctx.lineTo(partnerPoints[0].x, partnerPoints[0].y);
+            
+            for (let i = 1; i < partnerPoints.length; i++) {
+                ctx.lineTo(partnerPoints[i].x, partnerPoints[i].y);
+            }
+            
+            ctx.lineTo(partnerPoints[partnerPoints.length - 1].x, canvas.height);
+            ctx.closePath();
+            ctx.fill();
+            
+            // Generate traditional advertising data
+            const traditionalPoints = [];
+            let tradY = canvas.height * 0.9; // Start low
+            
+            for (let i = 0; i < numPoints; i++) {
+                const x = (i / (numPoints - 1)) * canvas.width;
+                
+                // Generate next point with slight upward trend
+                const randomFactor = Math.random() * 10 - 5; // Random between -5 and 5
+                const trendFactor = -3; // Slight upward trend (remember Y is inverted)
+                tradY = Math.max(canvas.height * 0.5, Math.min(canvas.height * 0.9, tradY + randomFactor + trendFactor));
+                
+                traditionalPoints.push({ x, y: tradY });
+            }
+            
+            // Draw traditional advertising line
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.3)';
+            ctx.lineWidth = 2;
+            ctx.setLineDash([5, 5]);
+            ctx.beginPath();
+            ctx.moveTo(traditionalPoints[0].x, traditionalPoints[0].y);
+            
+            for (let i = 1; i < traditionalPoints.length; i++) {
+                ctx.lineTo(traditionalPoints[i].x, traditionalPoints[i].y);
+            }
+            
+            ctx.stroke();
+            ctx.setLineDash([]);
+            
+            // Add legend
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.5)';
+            ctx.fillRect(canvas.width - 200, 20, 180, 70);
+            
+            // Partner revenue legend
+            ctx.strokeStyle = '#36F9C5';
+            ctx.lineWidth = 3;
+            ctx.beginPath();
+            ctx.moveTo(canvas.width - 180, 40);
+            ctx.lineTo(canvas.width - 140, 40);
+            ctx.stroke();
+            
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.9)';
+            ctx.font = '12px Arial';
+            ctx.textAlign = 'left';
+            ctx.fillText('Partner Revenue', canvas.width - 130, 43);
+            
+            // Traditional advertising legend
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.3)';
+            ctx.lineWidth = 2;
+            ctx.setLineDash([5, 5]);
+            ctx.beginPath();
+            ctx.moveTo(canvas.width - 180, 65);
+            ctx.lineTo(canvas.width - 140, 65);
+            ctx.stroke();
+            ctx.setLineDash([]);
+            
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.7)';
+            ctx.font = '12px Arial';
+            ctx.textAlign = 'left';
+            ctx.fillText('Traditional Advertising', canvas.width - 130, 68);
+            
+            container.appendChild(canvas);
+        }
+    </script>
+</body>
+</html>

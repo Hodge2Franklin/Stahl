@@ -1,0 +1,2268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Personalized Trading Interface | Stahl Insights</title>
+    <meta name="description" content="Harness your trading superpowers with Stahl's personalized trading interface. We speak your language and help you make better decisions.">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* Personalized Trading Interface Specific Styles */
+        .personal-hero {
+            background-color: var(--bg-secondary);
+            padding: 8rem 0 5rem;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .personal-hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 30%, rgba(0, 200, 255, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 70%, rgba(54, 249, 197, 0.1) 0%, transparent 50%);
+            z-index: 0;
+        }
+        
+        .personal-hero-content {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .personal-hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .personal-hero p {
+            font-size: 1.2rem;
+            margin-bottom: 2.5rem;
+            color: var(--text-primary);
+        }
+        
+        .personal-section {
+            padding: 5rem 0;
+            background-color: var(--bg-primary);
+        }
+        
+        .personal-container {
+            background-color: var(--bg-secondary);
+            border-radius: 8px;
+            padding: 2rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(0, 200, 255, 0.1);
+            margin-bottom: 3rem;
+        }
+        
+        .personal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .personal-title {
+            font-size: 1.8rem;
+            margin-bottom: 0;
+        }
+        
+        .personal-subtitle {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            margin-top: 0.5rem;
+        }
+        
+        .personal-tabs {
+            display: flex;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            margin-bottom: 2rem;
+            overflow-x: auto;
+            scrollbar-width: none;
+        }
+        
+        .personal-tabs::-webkit-scrollbar {
+            display: none;
+        }
+        
+        .personal-tab {
+            padding: 1rem 2rem;
+            font-size: 1rem;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all var(--transition-speed) ease;
+            border-bottom: 2px solid transparent;
+            white-space: nowrap;
+        }
+        
+        .personal-tab:hover {
+            color: var(--text-primary);
+        }
+        
+        .personal-tab.active {
+            color: var(--accent-1);
+            border-bottom: 2px solid var(--accent-1);
+        }
+        
+        .personal-content {
+            display: none;
+        }
+        
+        .personal-content.active {
+            display: block;
+        }
+        
+        /* Profile Section */
+        .profile-section {
+            margin-bottom: 3rem;
+        }
+        
+        .profile-grid {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 2rem;
+        }
+        
+        .profile-sidebar {
+            background-color: rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+            padding: 1.5rem;
+            border: 1px solid rgba(0, 200, 255, 0.1);
+        }
+        
+        .profile-avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background-color: var(--accent-1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            font-size: 3rem;
+            color: var(--bg-primary);
+        }
+        
+        .profile-name {
+            font-size: 1.5rem;
+            text-align: center;
+            margin-bottom: 0.5rem;
+        }
+        
+        .profile-type {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+        
+        .profile-stats {
+            margin-bottom: 1.5rem;
+        }
+        
+        .profile-stat {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.8rem;
+            font-size: 0.9rem;
+        }
+        
+        .profile-stat-label {
+            color: var(--text-secondary);
+        }
+        
+        .profile-stat-value {
+            font-family: var(--font-data);
+            font-weight: 600;
+        }
+        
+        .profile-stat-value.positive {
+            color: var(--chart-green);
+        }
+        
+        .profile-stat-value.negative {
+            color: var(--chart-red);
+        }
+        
+        .profile-strengths {
+            margin-bottom: 1.5rem;
+        }
+        
+        .profile-strengths-title {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+        }
+        
+        .strength-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+        
+        .strength-tag {
+            display: inline-block;
+            padding: 0.3rem 0.8rem;
+            background-color: rgba(0, 200, 255, 0.1);
+            border: 1px solid rgba(0, 200, 255, 0.3);
+            border-radius: 4px;
+            font-size: 0.8rem;
+            color: var(--accent-1);
+        }
+        
+        .profile-main {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+        
+        .profile-card {
+            background-color: rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+            padding: 1.5rem;
+            border: 1px solid rgba(0, 200, 255, 0.1);
+        }
+        
+        .profile-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .profile-card-title {
+            font-size: 1.2rem;
+            margin-bottom: 0;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .profile-card-title i {
+            color: var(--accent-1);
+        }
+        
+        .profile-card-content {
+            font-size: 0.95rem;
+            line-height: 1.6;
+            color: var(--text-secondary);
+        }
+        
+        .profile-card-content strong {
+            color: var(--text-primary);
+        }
+        
+        .profile-card-content ul {
+            margin-top: 1rem;
+            padding-left: 1.5rem;
+        }
+        
+        .profile-card-content li {
+            margin-bottom: 0.5rem;
+        }
+        
+        .profile-chart {
+            height: 200px;
+            margin: 1.5rem 0;
+            position: relative;
+        }
+        
+        .profile-chart canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+        
+        /* Assessment Section */
+        .assessment-intro {
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto 3rem;
+        }
+        
+        .assessment-intro h3 {
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+        }
+        
+        .assessment-intro p {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+        }
+        
+        .assessment-progress {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 2rem;
+        }
+        
+        .progress-step {
+            flex: 1;
+            text-align: center;
+            position: relative;
+        }
+        
+        .progress-step::after {
+            content: '';
+            position: absolute;
+            top: 15px;
+            left: 50%;
+            width: 100%;
+            height: 2px;
+            background-color: rgba(255, 255, 255, 0.1);
+            z-index: 0;
+        }
+        
+        .progress-step:last-child::after {
+            display: none;
+        }
+        
+        .step-number {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 0.5rem;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            position: relative;
+            z-index: 1;
+        }
+        
+        .step-number.active {
+            background-color: var(--accent-1);
+            color: var(--bg-primary);
+        }
+        
+        .step-number.completed {
+            background-color: var(--accent-3);
+            color: var(--bg-primary);
+        }
+        
+        .step-label {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+        
+        .step-label.active {
+            color: var(--text-primary);
+        }
+        
+        .assessment-question {
+            background-color: rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+            padding: 2rem;
+            border: 1px solid rgba(0, 200, 255, 0.1);
+            margin-bottom: 2rem;
+        }
+        
+        .question-number {
+            font-size: 0.9rem;
+            color: var(--accent-1);
+            margin-bottom: 0.5rem;
+        }
+        
+        .question-text {
+            font-size: 1.3rem;
+            margin-bottom: 2rem;
+        }
+        
+        .question-options {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        
+        .question-option {
+            background-color: rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 4px;
+            padding: 1rem;
+            cursor: pointer;
+            transition: all var(--transition-speed) ease;
+        }
+        
+        .question-option:hover {
+            border-color: rgba(0, 200, 255, 0.3);
+            transform: translateY(-2px);
+        }
+        
+        .question-option.selected {
+            border-color: var(--accent-1);
+            background-color: rgba(0, 200, 255, 0.1);
+        }
+        
+        .assessment-actions {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 2rem;
+        }
+        
+        .assessment-btn {
+            padding: 0.8rem 2rem;
+            border-radius: 4px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all var(--transition-speed) ease;
+        }
+        
+        .prev-btn {
+            background-color: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--text-secondary);
+        }
+        
+        .prev-btn:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: var(--text-primary);
+        }
+        
+        .next-btn {
+            background-color: rgba(0, 200, 255, 0.1);
+            border: 1px solid rgba(0, 200, 255, 0.3);
+            color: var(--accent-1);
+        }
+        
+        .next-btn:hover {
+            background-color: rgba(0, 200, 255, 0.2);
+            transform: translateY(-2px);
+        }
+        
+        .submit-btn {
+            background: linear-gradient(90deg, var(--accent-1), var(--accent-3));
+            border: none;
+            color: var(--bg-primary);
+        }
+        
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 200, 255, 0.3);
+        }
+        
+        /* History Section */
+        .history-filters {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+        
+        .history-filter {
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all var(--transition-speed) ease;
+            background-color: rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            color: var(--text-secondary);
+        }
+        
+        .history-filter:hover {
+            border-color: rgba(0, 200, 255, 0.3);
+            color: var(--text-primary);
+        }
+        
+        .history-filter.active {
+            background-color: rgba(0, 200, 255, 0.1);
+            border-color: rgba(0, 200, 255, 0.3);
+            color: var(--accent-1);
+        }
+        
+        .history-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .history-card {
+            background-color: rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+            padding: 1.5rem;
+            border: 1px solid rgba(0, 200, 255, 0.1);
+            transition: all var(--transition-speed) ease;
+        }
+        
+        .history-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            border-color: rgba(0, 200, 255, 0.3);
+        }
+        
+        .history-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+        }
+        
+        .history-title {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .history-ticker {
+            font-family: var(--font-data);
+            font-weight: 600;
+            color: var(--accent-1);
+        }
+        
+        .history-tag {
+            display: inline-block;
+            padding: 0.3rem 0.8rem;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        
+        .history-tag.decision {
+            background-color: rgba(54, 249, 197, 0.1);
+            border: 1px solid rgba(54, 249, 197, 0.3);
+            color: var(--accent-3);
+        }
+        
+        .history-tag.non-decision {
+            background-color: rgba(255, 58, 94, 0.1);
+            border: 1px solid rgba(255, 58, 94, 0.3);
+            color: var(--accent-2);
+        }
+        
+        .history-date {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+        }
+        
+        .history-description {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+        
+        .history-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            padding-top: 1rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .history-result {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-family: var(--font-data);
+            font-weight: 600;
+        }
+        
+        .history-result.positive {
+            color: var(--chart-green);
+        }
+        
+        .history-result.negative {
+            color: var(--chart-red);
+        }
+        
+        .history-result.neutral {
+            color: var(--text-secondary);
+        }
+        
+        .history-insight {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+            transition: all var(--transition-speed) ease;
+        }
+        
+        .history-insight:hover {
+            color: var(--accent-1);
+        }
+        
+        .history-pagination {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-top: 2rem;
+        }
+        
+        .page-btn {
+            width: 30px;
+            height: 30px;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all var(--transition-speed) ease;
+            background-color: rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            color: var(--text-secondary);
+        }
+        
+        .page-btn:hover {
+            border-color: rgba(0, 200, 255, 0.3);
+            color: var(--text-primary);
+        }
+        
+        .page-btn.active {
+            background-color: rgba(0, 200, 255, 0.1);
+            border-color: rgba(0, 200, 255, 0.3);
+            color: var(--accent-1);
+        }
+        
+        /* Insights Section */
+        .insights-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .insight-card {
+            background-color: rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+            padding: 1.5rem;
+            border: 1px solid rgba(0, 200, 255, 0.1);
+            transition: all var(--transition-speed) ease;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .insight-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            border-color: rgba(0, 200, 255, 0.3);
+        }
+        
+        .insight-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: rgba(0, 200, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+            color: var(--accent-1);
+        }
+        
+        .insight-title {
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+        }
+        
+        .insight-description {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+            flex-grow: 1;
+        }
+        
+        .insight-action {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            background-color: rgba(0, 200, 255, 0.1);
+            border: 1px solid rgba(0, 200, 255, 0.3);
+            border-radius: 4px;
+            font-size: 0.9rem;
+            color: var(--accent-1);
+            cursor: pointer;
+            transition: all var(--transition-speed) ease;
+            text-align: center;
+        }
+        
+        .insight-action:hover {
+            background-color: rgba(0, 200, 255, 0.2);
+            transform: translateY(-2px);
+        }
+        
+        /* Algorithm Section */
+        .algorithm-header {
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto 3rem;
+        }
+        
+        .algorithm-header h3 {
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+        }
+        
+        .algorithm-header p {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+        }
+        
+        .algorithm-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+        
+        .algorithm-card {
+            background-color: rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+            padding: 1.5rem;
+            border: 1px solid rgba(0, 200, 255, 0.1);
+            transition: all var(--transition-speed) ease;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .algorithm-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            border-color: rgba(0, 200, 255, 0.3);
+        }
+        
+        .algorithm-title {
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .algorithm-title i {
+            color: var(--accent-1);
+        }
+        
+        .algorithm-description {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+            flex-grow: 1;
+        }
+        
+        .algorithm-stats {
+            display: flex;
+            justify-content: space-between;
+            padding-top: 1rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .algorithm-stat {
+            text-align: center;
+        }
+        
+        .algorithm-stat-value {
+            font-size: 1.5rem;
+            font-family: var(--font-data);
+            font-weight: 600;
+            color: var(--accent-1);
+            margin-bottom: 0.2rem;
+        }
+        
+        .algorithm-stat-label {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+        
+        .algorithm-chart {
+            height: 400px;
+            margin-bottom: 3rem;
+            position: relative;
+            background-color: rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+            padding: 1.5rem;
+            border: 1px solid rgba(0, 200, 255, 0.1);
+        }
+        
+        .algorithm-chart canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+        
+        .algorithm-actions {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+        }
+        
+        .algorithm-btn {
+            padding: 0.8rem 2rem;
+            border-radius: 4px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all var(--transition-speed) ease;
+        }
+        
+        .algorithm-reset {
+            background-color: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--text-secondary);
+        }
+        
+        .algorithm-reset:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: var(--text-primary);
+        }
+        
+        .algorithm-upgrade {
+            background: linear-gradient(90deg, var(--accent-1), var(--accent-3));
+            border: none;
+            color: var(--bg-primary);
+        }
+        
+        .algorithm-upgrade:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 200, 255, 0.3);
+        }
+        
+        /* Insight Modal */
+        .insight-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .insight-modal.active {
+            display: flex;
+        }
+        
+        .modal-content {
+            background-color: var(--bg-secondary);
+            border-radius: 8px;
+            padding: 2rem;
+            width: 90%;
+            max-width: 600px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(0, 200, 255, 0.1);
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .modal-title {
+            font-size: 1.5rem;
+            margin-bottom: 0;
+        }
+        
+        .modal-close {
+            font-size: 1.5rem;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all var(--transition-speed) ease;
+        }
+        
+        .modal-close:hover {
+            color: var(--text-primary);
+        }
+        
+        .modal-body {
+            margin-bottom: 1.5rem;
+        }
+        
+        .modal-section {
+            margin-bottom: 2rem;
+        }
+        
+        .modal-section-title {
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            color: var(--accent-1);
+        }
+        
+        .modal-text {
+            font-size: 0.95rem;
+            line-height: 1.6;
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+        }
+        
+        .modal-list {
+            margin-top: 1rem;
+            padding-left: 1.5rem;
+        }
+        
+        .modal-list li {
+            margin-bottom: 0.5rem;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            color: var(--text-secondary);
+        }
+        
+        .modal-chart {
+            height: 200px;
+            margin: 1.5rem 0;
+            position: relative;
+        }
+        
+        .modal-chart canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+        
+        .modal-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 1rem;
+            margin-top: 2rem;
+            padding-top: 1rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .modal-btn {
+            padding: 0.8rem 2rem;
+            border-radius: 4px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all var(--transition-speed) ease;
+        }
+        
+        .modal-close-btn {
+            background-color: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--text-secondary);
+        }
+        
+        .modal-close-btn:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: var(--text-primary);
+        }
+        
+        .modal-apply-btn {
+            background-color: rgba(0, 200, 255, 0.1);
+            border: 1px solid rgba(0, 200, 255, 0.3);
+            color: var(--accent-1);
+        }
+        
+        .modal-apply-btn:hover {
+            background-color: rgba(0, 200, 255, 0.2);
+            transform: translateY(-2px);
+        }
+        
+        @media (max-width: 768px) {
+            .personal-hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .personal-hero p {
+                font-size: 1rem;
+            }
+            
+            .profile-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .personal-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+            
+            .personal-tab {
+                padding: 0.8rem 1.5rem;
+            }
+            
+            .assessment-progress {
+                display: none;
+            }
+            
+            .history-grid, .insights-grid, .algorithm-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="header-container">
+            <div class="logo">
+                <img src="images/logo.png" alt="Stahl Insights Logo" id="logo-placeholder">
+                <div class="logo-text">STAHL<span>INSIGHTS</span></div>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="articles.html">Articles</a></li>
+                    <li><a href="dashboards.html">Dashboards</a></li>
+                    <li><a href="premium.html">Premium</a></li>
+                    <li><a href="about.html">About</a></li>
+                </ul>
+            </nav>
+            <button class="login-btn">Login</button>
+        </div>
+    </header>
+
+    <!-- Breaking News Ticker -->
+    <div class="ticker-wrap">
+        <div class="ticker">
+            <div class="ticker-item"><span>BREAKING:</span> Company Z shares plummet 15% amid undisclosed investigation</div>
+            <div class="ticker-item"><span>ALERT:</span> Insider trading patterns detected in tech sector</div>
+            <div class="ticker-item"><span>EXCLUSIVE:</span> IMU sentiment spike detected across forums - 78% positive</div>
+            <div class="ticker-item"><span>MARKET SHIFT:</span> Algorithmic signals point to commodities surge in Q3</div>
+            <div class="ticker-item"><span>BREAKING:</span> Company Z shares plummet 15% amid undisclosed investigation</div>
+            <div class="ticker-item"><span>ALERT:</span> Insider trading patterns detected in tech sector</div>
+            <div class="ticker-item"><span>EXCLUSIVE:</span> IMU sentiment spike detected across forums - 78% positive</div>
+            <div class="ticker-item"><span>MARKET SHIFT:</span> Algorithmic signals point to commodities surge in Q3</div>
+        </div>
+    </div>
+
+    <!-- Personalized Trading Hero -->
+    <section class="personal-hero">
+        <div class="container">
+            <div class="personal-hero-content fade-in">
+                <h1>Trading in Your Language</h1>
+                <p>We speak your language and help you harness your trading superpowers. Every decision and non-decision is tracked to upgrade your algorithm and maximize your unique strengths.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Personalized Trading Interface -->
+    <section class="personal-section">
+        <div class="container">
+            <div class="personal-container slide-up">
+                <div class="personal-header">
+                    <div>
+                        <h2 class="personal-title">Your Personalized Trading Interface</h2>
+                        <p class="personal-subtitle">Tailored insights based on your unique trading psychology and decision patterns</p>
+                    </div>
+                </div>
+                
+                <div class="personal-tabs">
+                    <div class="personal-tab active" data-tab="profile">Trading Profile</div>
+                    <div class="personal-tab" data-tab="assessment">Psychological Assessment</div>
+                    <div class="personal-tab" data-tab="history">Decision History</div>
+                    <div class="personal-tab" data-tab="insights">Personalized Insights</div>
+                    <div class="personal-tab" data-tab="algorithm">Your Algorithm</div>
+                </div>
+                
+                <!-- Profile Tab Content -->
+                <div class="personal-content active" id="profile-content">
+                    <div class="profile-section">
+                        <div class="profile-grid">
+                            <div class="profile-sidebar">
+                                <div class="profile-avatar">
+                                    <i class="fas fa-user"></i>
+                                </div>
+                                <h3 class="profile-name">Trader Profile</h3>
+                                <p class="profile-type">Strategic Opportunist</p>
+                                
+                                <div class="profile-stats">
+                                    <div class="profile-stat">
+                                        <span class="profile-stat-label">Win Rate:</span>
+                                        <span class="profile-stat-value positive">68%</span>
+                                    </div>
+                                    <div class="profile-stat">
+                                        <span class="profile-stat-label">Avg. Hold Time:</span>
+                                        <span class="profile-stat-value">14.3 days</span>
+                                    </div>
+                                    <div class="profile-stat">
+                                        <span class="profile-stat-label">Risk Tolerance:</span>
+                                        <span class="profile-stat-value">Medium-High</span>
+                                    </div>
+                                    <div class="profile-stat">
+                                        <span class="profile-stat-label">Decision Speed:</span>
+                                        <span class="profile-stat-value">Moderate</span>
+                                    </div>
+                                    <div class="profile-stat">
+                                        <span class="profile-stat-label">Emotional Control:</span>
+                                        <span class="profile-stat-value">High</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="profile-strengths">
+                                    <h4 class="profile-strengths-title">Your Trading Superpowers</h4>
+                                    <div class="strength-tags">
+                                        <span class="strength-tag">Pattern Recognition</span>
+                                        <span class="strength-tag">Contrarian Thinking</span>
+                                        <span class="strength-tag">Patience</span>
+                                        <span class="strength-tag">Research Depth</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="profile-main">
+                                <div class="profile-card">
+                                    <div class="profile-card-header">
+                                        <h3 class="profile-card-title">
+                                            <i class="fas fa-brain"></i>
+                                            <span>Your Trading Psychology</span>
+                                        </h3>
+                                    </div>
+                                    <div class="profile-card-content">
+                                        <p>As a <strong>Strategic Opportunist</strong>, you excel at identifying unique opportunities that others miss. Your trading decisions are characterized by thorough research and a willingness to take calculated risks when you see a clear advantage.</p>
+                                        
+                                        <p>Your psychological profile indicates:</p>
+                                        <ul>
+                                            <li><strong>Strengths:</strong> You have exceptional pattern recognition abilities and can connect disparate pieces of information. You're patient and willing to wait for the right opportunity.</li>
+                                            <li><strong>Challenges:</strong> You sometimes hesitate too long on decisions, missing optimal entry points. You may also become overly attached to your research, making it difficult to cut losses when necessary.</li>
+                                            <li><strong>Decision Style:</strong> You prefer to gather comprehensive information before making decisions, which leads to high-quality choices but can sometimes result in missed opportunities due to timing.</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                
+                                <div class="profile-card">
+                                    <div class="profile-card-header">
+                                        <h3 class="profile-card-title">
+                                            <i class="fas fa-chart-line"></i>
+                                            <span>Performance Analysis</span>
+                                        </h3>
+                                    </div>
+                                    <div class="profile-chart" id="performance-chart"></div>
+                                    <div class="profile-card-content">
+                                        <p>Your trading performance shows consistent growth with periodic drawdowns. Analysis reveals:</p>
+                                        <ul>
+                                            <li>Your best performing sectors are <strong>Technology</strong> and <strong>Healthcare</strong>, where your pattern recognition abilities give you an edge.</li>
+                                            <li>Your most profitable trades come from situations where you identified a market overreaction and took a contrarian position.</li>
+                                            <li>Your largest losses typically occur when you hold positions too long after your initial thesis has played out.</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                
+                                <div class="profile-card">
+                                    <div class="profile-card-header">
+                                        <h3 class="profile-card-title">
+                                            <i class="fas fa-lightbulb"></i>
+                                            <span>Personalized Recommendations</span>
+                                        </h3>
+                                    </div>
+                                    <div class="profile-card-content">
+                                        <p>Based on your trading psychology and performance history, we recommend:</p>
+                                        <ul>
+                                            <li><strong>Set clearer exit criteria</strong> before entering trades to avoid holding positions too long.</li>
+                                            <li><strong>Implement a staged entry strategy</strong> to overcome hesitation on initial positions.</li>
+                                            <li><strong>Focus on sectors</strong> where your pattern recognition abilities give you an edge (Technology, Healthcare).</li>
+                                            <li><strong>Consider shorter-term opportunities</strong> in addition to your medium-term approach to capitalize on your market insights more frequently.</li>
+                                            <li><strong>Track non-decisions</strong> (opportunities you identified but didn't act on) to improve your decision-making speed.</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Assessment Tab Content -->
+                <div class="personal-content" id="assessment-content">
+                    <div class="assessment-intro">
+                        <h3>Trading Psychology Assessment</h3>
+                        <p>Complete this brief assessment to help us understand your trading psychology and decision-making patterns. This will allow us to provide more personalized insights and recommendations.</p>
+                        
+                        <div class="assessment-progress">
+                            <div class="progress-step">
+                                <div class="step-number active">1</div>
+                                <div class="step-label active">Trading Style</div>
+                            </div>
+                            <div class="progress-step">
+                                <div class="step-number">2</div>
+                                <div class="step-label">Decision Making</div>
+                            </div>
+                            <div class="progress-step">
+                                <div class="step-number">3</div>
+                                <div class="step-label">Risk Tolerance</div>
+                            </div>
+                            <div class="progress-step">
+                                <div class="step-number">4</div>
+                                <div class="step-label">Emotional Response</div>
+                            </div>
+                            <div class="progress-step">
+                                <div class="step-number">5</div>
+                                <div class="step-label">Past Experiences</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="assessment-question">
+                        <div class="question-number">Question 1 of 15</div>
+                        <h3 class="question-text">When you've identified a potential investment opportunity, what typically happens next?</h3>
+                        
+                        <div class="question-options">
+                            <div class="question-option">
+                                I immediately act on it to avoid missing out on potential gains.
+                            </div>
+                            <div class="question-option">
+                                I conduct thorough research, even if it means potentially missing the optimal entry point.
+                            </div>
+                            <div class="question-option">
+                                I take a small position immediately while continuing my research.
+                            </div>
+                            <div class="question-option">
+                                I consult with others or seek external validation before making a decision.
+                            </div>
+                        </div>
+                        
+                        <div class="assessment-actions">
+                            <div class="assessment-btn prev-btn" style="visibility: hidden;">Previous</div>
+                            <div class="assessment-btn next-btn">Next Question</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- History Tab Content -->
+                <div class="personal-content" id="history-content">
+                    <div class="history-filters">
+                        <div class="history-filter active">All</div>
+                        <div class="history-filter">Decisions</div>
+                        <div class="history-filter">Non-Decisions</div>
+                        <div class="history-filter">Profitable</div>
+                        <div class="history-filter">Unprofitable</div>
+                        <div class="history-filter">Recent</div>
+                    </div>
+                    
+                    <div class="history-grid">
+                        <!-- History Card 1 -->
+                        <div class="history-card">
+                            <div class="history-card-header">
+                                <h3 class="history-title">
+                                    <span class="history-ticker">IMU</span>
+                                    <span>Investment</span>
+                                </h3>
+                                <span class="history-tag decision">Decision</span>
+                            </div>
+                            <div class="history-date">March 28, 2025</div>
+                            <p class="history-description">Purchased 500 shares of IMU at $68.42 based on positive sentiment analysis and forum discussions indicating a potential breakthrough announcement.</p>
+                            <div class="history-meta">
+                                <div class="history-result positive">
+                                    <i class="fas fa-arrow-up"></i>
+                                    <span>+14.6%</span>
+                                </div>
+                                <div class="history-insight">
+                                    <i class="fas fa-lightbulb"></i>
+                                    <span>View Insight</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- History Card 2 -->
+                        <div class="history-card">
+                            <div class="history-card-header">
+                                <h3 class="history-title">
+                                    <span class="history-ticker">TECH</span>
+                                    <span>Opportunity</span>
+                                </h3>
+                                <span class="history-tag non-decision">Non-Decision</span>
+                            </div>
+                            <div class="history-date">March 25, 2025</div>
+                            <p class="history-description">Identified potential entry point for TECH at $128.75 but hesitated due to concerns about upcoming earnings report. Price subsequently rose to $142.65.</p>
+                            <div class="history-meta">
+                                <div class="history-result negative">
+                                    <i class="fas fa-arrow-down"></i>
+                                    <span>-10.8% (Missed)</span>
+                                </div>
+                                <div class="history-insight">
+                                    <i class="fas fa-lightbulb"></i>
+                                    <span>View Insight</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- History Card 3 -->
+                        <div class="history-card">
+                            <div class="history-card-header">
+                                <h3 class="history-title">
+                                    <span class="history-ticker">COMP-Z</span>
+                                    <span>Investment</span>
+                                </h3>
+                                <span class="history-tag decision">Decision</span>
+                            </div>
+                            <div class="history-date">March 20, 2025</div>
+                            <p class="history-description">Sold 300 shares of COMP-Z at $42.18 based on concerning patterns in supply chain data that hadn't yet been widely reported.</p>
+                            <div class="history-meta">
+                                <div class="history-result positive">
+                                    <i class="fas fa-arrow-up"></i>
+                                    <span>+23.4% (Avoided Loss)</span>
+                                </div>
+                                <div class="history-insight">
+                                    <i class="fas fa-lightbulb"></i>
+                                    <span>View Insight</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- History Card 4 -->
+                        <div class="history-card">
+                            <div class="history-card-header">
+                                <h3 class="history-title">
+                                    <span class="history-ticker">QNTM</span>
+                                    <span>Investment</span>
+                                </h3>
+                                <span class="history-tag decision">Decision</span>
+                            </div>
+                            <div class="history-date">March 15, 2025</div>
+                            <p class="history-description">Purchased 200 shares of QNTM at $84.30 based on analysis of their patent filings and R&D activities indicating potential breakthrough technologies.</p>
+                            <div class="history-meta">
+                                <div class="history-result positive">
+                                    <i class="fas fa-arrow-up"></i>
+                                    <span>+10.0%</span>
+                                </div>
+                                <div class="history-insight">
+                                    <i class="fas fa-lightbulb"></i>
+                                    <span>View Insight</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- History Card 5 -->
+                        <div class="history-card">
+                            <div class="history-card-header">
+                                <h3 class="history-title">
+                                    <span class="history-ticker">BLKC</span>
+                                    <span>Opportunity</span>
+                                </h3>
+                                <span class="history-tag non-decision">Non-Decision</span>
+                            </div>
+                            <div class="history-date">March 10, 2025</div>
+                            <p class="history-description">Identified potential entry point for BLKC at $52.40 but decided to wait for more confirmation of their product launch success. Price rose to $56.29.</p>
+                            <div class="history-meta">
+                                <div class="history-result negative">
+                                    <i class="fas fa-arrow-down"></i>
+                                    <span>-7.4% (Missed)</span>
+                                </div>
+                                <div class="history-insight">
+                                    <i class="fas fa-lightbulb"></i>
+                                    <span>View Insight</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- History Card 6 -->
+                        <div class="history-card">
+                            <div class="history-card-header">
+                                <h3 class="history-title">
+                                    <span class="history-ticker">CRYP</span>
+                                    <span>Investment</span>
+                                </h3>
+                                <span class="history-tag decision">Decision</span>
+                            </div>
+                            <div class="history-date">March 5, 2025</div>
+                            <p class="history-description">Purchased 1000 shares of CRYP at $26.75 based on positive sentiment analysis, but failed to set a proper stop loss when negative news emerged.</p>
+                            <div class="history-meta">
+                                <div class="history-result negative">
+                                    <i class="fas fa-arrow-down"></i>
+                                    <span>-12.3%</span>
+                                </div>
+                                <div class="history-insight">
+                                    <i class="fas fa-lightbulb"></i>
+                                    <span>View Insight</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="history-pagination">
+                        <div class="page-btn active">1</div>
+                        <div class="page-btn">2</div>
+                        <div class="page-btn">3</div>
+                        <div class="page-btn">
+                            <i class="fas fa-ellipsis-h"></i>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Insights Tab Content -->
+                <div class="personal-content" id="insights-content">
+                    <div class="insights-grid">
+                        <!-- Insight Card 1 -->
+                        <div class="insight-card">
+                            <div class="insight-icon">
+                                <i class="fas fa-chart-line"></i>
+                            </div>
+                            <h3 class="insight-title">Pattern Recognition Strength</h3>
+                            <p class="insight-description">Your trading history shows exceptional pattern recognition abilities, particularly in identifying market overreactions. You've successfully predicted 78% of market corrections in your focus sectors.</p>
+                            <div class="insight-action">Leverage This Strength</div>
+                        </div>
+                        
+                        <!-- Insight Card 2 -->
+                        <div class="insight-card">
+                            <div class="insight-icon">
+                                <i class="fas fa-hourglass-half"></i>
+                            </div>
+                            <h3 class="insight-title">Decision Timing Gap</h3>
+                            <p class="insight-description">Analysis of your non-decisions reveals a pattern of hesitation that has cost approximately 12.4% in potential returns over the past quarter. Your average delay between identification and action is 3.2 days.</p>
+                            <div class="insight-action">Address This Gap</div>
+                        </div>
+                        
+                        <!-- Insight Card 3 -->
+                        <div class="insight-card">
+                            <div class="insight-icon">
+                                <i class="fas fa-brain"></i>
+                            </div>
+                            <h3 class="insight-title">Contrarian Advantage</h3>
+                            <p class="insight-description">Your most profitable trades occur when you take positions contrary to market sentiment. Your contrarian trades have an average return of 18.7% compared to 7.2% for trend-following trades.</p>
+                            <div class="insight-action">Maximize This Edge</div>
+                        </div>
+                        
+                        <!-- Insight Card 4 -->
+                        <div class="insight-card">
+                            <div class="insight-icon">
+                                <i class="fas fa-exclamation-triangle"></i>
+                            </div>
+                            <h3 class="insight-title">Exit Strategy Weakness</h3>
+                            <p class="insight-description">You tend to hold winning positions too long, giving back an average of 5.8% of gains before exiting. Your exit timing is in the bottom quartile compared to similar traders.</p>
+                            <div class="insight-action">Improve This Area</div>
+                        </div>
+                        
+                        <!-- Insight Card 5 -->
+                        <div class="insight-card">
+                            <div class="insight-icon">
+                                <i class="fas fa-microscope"></i>
+                            </div>
+                            <h3 class="insight-title">Research Depth Advantage</h3>
+                            <p class="insight-description">Your thorough research approach gives you an edge in identifying long-term value. Positions held for 30+ days show a 22.3% higher return rate than the market average.</p>
+                            <div class="insight-action">Enhance This Strength</div>
+                        </div>
+                        
+                        <!-- Insight Card 6 -->
+                        <div class="insight-card">
+                            <div class="insight-icon">
+                                <i class="fas fa-balance-scale"></i>
+                            </div>
+                            <h3 class="insight-title">Position Sizing Opportunity</h3>
+                            <p class="insight-description">Your highest conviction trades (based on entry size) outperform your average trades by 15.2%, suggesting you should increase position sizes when your confidence is high.</p>
+                            <div class="insight-action">Optimize This Area</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Algorithm Tab Content -->
+                <div class="personal-content" id="algorithm-content">
+                    <div class="algorithm-header">
+                        <h3>Your Trading Algorithm</h3>
+                        <p>Based on your trading history, decisions, and non-decisions, we've developed a personalized algorithm that learns from your patterns and helps you harness your superpowers.</p>
+                    </div>
+                    
+                    <div class="algorithm-grid">
+                        <!-- Algorithm Card 1 -->
+                        <div class="algorithm-card">
+                            <h3 class="algorithm-title">
+                                <i class="fas fa-brain"></i>
+                                <span>Pattern Recognition Engine</span>
+                            </h3>
+                            <p class="algorithm-description">This component of your algorithm identifies patterns similar to those you've successfully recognized in the past, with a focus on market overreactions and sentiment shifts.</p>
+                            <div class="algorithm-stats">
+                                <div class="algorithm-stat">
+                                    <div class="algorithm-stat-value">87%</div>
+                                    <div class="algorithm-stat-label">Accuracy</div>
+                                </div>
+                                <div class="algorithm-stat">
+                                    <div class="algorithm-stat-value">14.2%</div>
+                                    <div class="algorithm-stat-label">Avg. Return</div>
+                                </div>
+                                <div class="algorithm-stat">
+                                    <div class="algorithm-stat-value">42</div>
+                                    <div class="algorithm-stat-label">Signals</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Algorithm Card 2 -->
+                        <div class="algorithm-card">
+                            <h3 class="algorithm-title">
+                                <i class="fas fa-clock"></i>
+                                <span>Timing Optimizer</span>
+                            </h3>
+                            <p class="algorithm-description">This component helps overcome your tendency to hesitate by providing optimal entry and exit points based on your historical trading patterns and market conditions.</p>
+                            <div class="algorithm-stats">
+                                <div class="algorithm-stat">
+                                    <div class="algorithm-stat-value">73%</div>
+                                    <div class="algorithm-stat-label">Accuracy</div>
+                                </div>
+                                <div class="algorithm-stat">
+                                    <div class="algorithm-stat-value">8.7%</div>
+                                    <div class="algorithm-stat-label">Improvement</div>
+                                </div>
+                                <div class="algorithm-stat">
+                                    <div class="algorithm-stat-value">56</div>
+                                    <div class="algorithm-stat-label">Signals</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Algorithm Card 3 -->
+                        <div class="algorithm-card">
+                            <h3 class="algorithm-title">
+                                <i class="fas fa-balance-scale"></i>
+                                <span>Position Sizer</span>
+                            </h3>
+                            <p class="algorithm-description">This component recommends optimal position sizes based on your conviction level, risk tolerance, and historical performance with similar trade setups.</p>
+                            <div class="algorithm-stats">
+                                <div class="algorithm-stat">
+                                    <div class="algorithm-stat-value">82%</div>
+                                    <div class="algorithm-stat-label">Accuracy</div>
+                                </div>
+                                <div class="algorithm-stat">
+                                    <div class="algorithm-stat-value">11.3%</div>
+                                    <div class="algorithm-stat-label">Improvement</div>
+                                </div>
+                                <div class="algorithm-stat">
+                                    <div class="algorithm-stat-value">38</div>
+                                    <div class="algorithm-stat-label">Signals</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="algorithm-chart" id="algorithm-chart"></div>
+                    
+                    <div class="algorithm-actions">
+                        <div class="algorithm-btn algorithm-reset">Reset Algorithm</div>
+                        <div class="algorithm-btn algorithm-upgrade">Upgrade Algorithm</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Insight Modal -->
+            <div class="insight-modal" id="insight-modal">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3 class="modal-title" id="modal-title">IMU Investment Insight</h3>
+                        <div class="modal-close">&times;</div>
+                    </div>
+                    <div class="modal-body">
+                        <div class="modal-section">
+                            <h4 class="modal-section-title">Decision Analysis</h4>
+                            <p class="modal-text">Your decision to purchase IMU at $68.42 demonstrated your pattern recognition strength. You correctly identified positive sentiment shifts in specialized forums 3 days before mainstream coverage.</p>
+                            <p class="modal-text">This decision leveraged your superpower of connecting disparate information sources and recognizing patterns that others missed.</p>
+                        </div>
+                        
+                        <div class="modal-section">
+                            <h4 class="modal-section-title">Performance Metrics</h4>
+                            <div class="modal-chart" id="insight-chart"></div>
+                            <p class="modal-text">Your entry timing was in the top 15% of all traders for this stock. However, your exit could have been optimized - you left approximately 3.2% of potential gains on the table.</p>
+                        </div>
+                        
+                        <div class="modal-section">
+                            <h4 class="modal-section-title">Psychological Factors</h4>
+                            <p class="modal-text">This trade aligned with your psychological strengths:</p>
+                            <ul class="modal-list">
+                                <li>You trusted your research despite conflicting mainstream opinions</li>
+                                <li>You maintained conviction during initial price volatility</li>
+                                <li>You applied your sector-specific knowledge effectively</li>
+                            </ul>
+                            <p class="modal-text">However, your tendency to hold positions too long was also evident in the exit timing.</p>
+                        </div>
+                        
+                        <div class="modal-section">
+                            <h4 class="modal-section-title">Recommendations</h4>
+                            <p class="modal-text">To further optimize similar trades in the future:</p>
+                            <ul class="modal-list">
+                                <li>Set specific exit criteria before entering the position</li>
+                                <li>Consider a staged exit strategy to capture more of the upside</li>
+                                <li>Apply this same pattern recognition approach to similar biotech companies</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="modal-actions">
+                        <div class="modal-btn modal-close-btn">Close</div>
+                        <div class="modal-btn modal-apply-btn">Apply Insights</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-about">
+                    <div class="footer-logo">
+                        <div class="logo-text">STAHL<span>INSIGHTS</span></div>
+                    </div>
+                    <p>Stahl Insights provides elite market intelligence through advanced algorithms, sentiment analysis, and predictive models that give our members an unprecedented edge.</p>
+                    <div class="social-links">
+                        <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-telegram-plane"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-discord"></i></a>
+                    </div>
+                </div>
+                <div class="footer-links-section">
+                    <h3 class="footer-heading">Quick Links</h3>
+                    <ul class="footer-links">
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="articles.html">Articles</a></li>
+                        <li><a href="dashboards.html">Dashboards</a></li>
+                        <li><a href="premium.html">Premium Access</a></li>
+                        <li><a href="about.html">About Dr. Stahl</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links-section">
+                    <h3 class="footer-heading">Resources</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Market Analysis</a></li>
+                        <li><a href="#">Sentiment Tracker</a></li>
+                        <li><a href="#">Deal Comparator</a></li>
+                        <li><a href="#">Forum Intelligence</a></li>
+                        <li><a href="#">Predictive Models</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links-section">
+                    <h3 class="footer-heading">Legal</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Terms of Service</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Disclaimer</a></li>
+                        <li><a href="#">Risk Disclosure</a></li>
+                        <li><a href="#">Contact Us</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Stahl Insights. All rights reserved. This is a fictional website created for demonstration purposes only.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script src="js/main.js"></script>
+    
+    <!-- Personalized Trading Interface Script -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Tab switching functionality
+            const tabs = document.querySelectorAll('.personal-tab');
+            const contents = document.querySelectorAll('.personal-content');
+            
+            tabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    const target = this.getAttribute('data-tab');
+                    
+                    // Update active tab
+                    tabs.forEach(t => t.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // Show corresponding content
+                    contents.forEach(content => {
+                        content.classList.remove('active');
+                        if (content.id === target + '-content') {
+                            content.classList.add('active');
+                        }
+                    });
+                });
+            });
+            
+            // Create performance chart
+            createPerformanceChart();
+            
+            // Create algorithm chart
+            createAlgorithmChart();
+            
+            // Create insight chart
+            createInsightChart();
+            
+            // Assessment functionality
+            const questionOptions = document.querySelectorAll('.question-option');
+            questionOptions.forEach(option => {
+                option.addEventListener('click', function() {
+                    questionOptions.forEach(opt => opt.classList.remove('selected'));
+                    this.classList.add('selected');
+                });
+            });
+            
+            const nextBtn = document.querySelector('.next-btn');
+            const prevBtn = document.querySelector('.prev-btn');
+            
+            nextBtn.addEventListener('click', function() {
+                // In a real implementation, this would save the answer and load the next question
+                alert('In a complete implementation, this would save your answer and load the next question.');
+            });
+            
+            prevBtn.addEventListener('click', function() {
+                // In a real implementation, this would load the previous question
+                alert('In a complete implementation, this would load the previous question.');
+            });
+            
+            // History filters functionality
+            const historyFilters = document.querySelectorAll('.history-filter');
+            historyFilters.forEach(filter => {
+                filter.addEventListener('click', function() {
+                    historyFilters.forEach(f => f.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // In a real implementation, this would filter the history cards
+                    // For this demo, we'll just show an alert
+                    alert(`In a complete implementation, this would filter the history to show only ${this.textContent} items.`);
+                });
+            });
+            
+            // Insight modal functionality
+            const insightLinks = document.querySelectorAll('.history-insight');
+            const insightModal = document.getElementById('insight-modal');
+            const modalClose = document.querySelector('.modal-close');
+            const modalCloseBtn = document.querySelector('.modal-close-btn');
+            
+            insightLinks.forEach(link => {
+                link.addEventListener('click', function() {
+                    const historyCard = this.closest('.history-card');
+                    const ticker = historyCard.querySelector('.history-ticker').textContent;
+                    const type = historyCard.querySelector('.history-tag').textContent;
+                    
+                    document.getElementById('modal-title').textContent = `${ticker} ${type} Insight`;
+                    
+                    insightModal.classList.add('active');
+                });
+            });
+            
+            modalClose.addEventListener('click', function() {
+                insightModal.classList.remove('active');
+            });
+            
+            modalCloseBtn.addEventListener('click', function() {
+                insightModal.classList.remove('active');
+            });
+            
+            const modalApplyBtn = document.querySelector('.modal-apply-btn');
+            modalApplyBtn.addEventListener('click', function() {
+                alert('In a complete implementation, these insights would be applied to your algorithm to improve future recommendations.');
+                insightModal.classList.remove('active');
+            });
+            
+            // Insight action buttons
+            const insightActions = document.querySelectorAll('.insight-action');
+            insightActions.forEach(action => {
+                action.addEventListener('click', function() {
+                    const insightTitle = this.closest('.insight-card').querySelector('.insight-title').textContent;
+                    alert(`In a complete implementation, this would provide detailed strategies to ${this.textContent.toLowerCase()} related to "${insightTitle}".`);
+                });
+            });
+            
+            // Algorithm buttons
+            const algorithmReset = document.querySelector('.algorithm-reset');
+            algorithmReset.addEventListener('click', function() {
+                alert('In a complete implementation, this would reset your algorithm to its initial state, discarding learned patterns.');
+            });
+            
+            const algorithmUpgrade = document.querySelector('.algorithm-upgrade');
+            algorithmUpgrade.addEventListener('click', function() {
+                alert('In a complete implementation, this would upgrade your algorithm with premium features and enhanced learning capabilities.');
+            });
+        });
+        
+        // Function to create performance chart
+        function createPerformanceChart() {
+            const container = document.getElementById('performance-chart');
+            if (!container) return;
+            
+            const canvas = document.createElement('canvas');
+            canvas.width = container.offsetWidth;
+            canvas.height = container.offsetHeight;
+            const ctx = canvas.getContext('2d');
+            
+            // Background
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.2)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            // Grid lines
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.05)';
+            ctx.lineWidth = 1;
+            
+            // Horizontal grid lines
+            for (let i = 0; i <= 4; i++) {
+                const y = (i / 4) * canvas.height;
+                ctx.beginPath();
+                ctx.moveTo(0, y);
+                ctx.lineTo(canvas.width, y);
+                ctx.stroke();
+            }
+            
+            // Vertical grid lines
+            for (let i = 0; i <= 6; i++) {
+                const x = (i / 6) * canvas.width;
+                ctx.beginPath();
+                ctx.moveTo(x, 0);
+                ctx.lineTo(x, canvas.height);
+                ctx.stroke();
+            }
+            
+            // Generate performance data points
+            const performancePoints = [];
+            const numPoints = 50;
+            let currentY = canvas.height * 0.7; // Start at 30% up from bottom
+            
+            for (let i = 0; i < numPoints; i++) {
+                const x = (i / (numPoints - 1)) * canvas.width;
+                
+                // Generate next point with upward trend and volatility
+                const randomFactor = Math.random() * 20 - 10; // Random between -10 and 10
+                const trendFactor = 0.5; // Slight upward trend
+                currentY = Math.max(10, Math.min(canvas.height - 10, currentY - randomFactor - trendFactor));
+                
+                performancePoints.push({ x, y: currentY });
+            }
+            
+            // Draw performance line
+            ctx.strokeStyle = '#00C8FF';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.moveTo(performancePoints[0].x, performancePoints[0].y);
+            
+            for (let i = 1; i < performancePoints.length; i++) {
+                ctx.lineTo(performancePoints[i].x, performancePoints[i].y);
+            }
+            
+            ctx.stroke();
+            
+            // Add subtle glow effect
+            ctx.shadowColor = '#00C8FF';
+            ctx.shadowBlur = 5;
+            ctx.stroke();
+            ctx.shadowBlur = 0;
+            
+            // Add area fill
+            const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
+            gradient.addColorStop(0, 'rgba(0, 200, 255, 0.2)');
+            gradient.addColorStop(1, 'rgba(0, 200, 255, 0.0)');
+            
+            ctx.fillStyle = gradient;
+            ctx.beginPath();
+            ctx.moveTo(performancePoints[0].x, canvas.height);
+            ctx.lineTo(performancePoints[0].x, performancePoints[0].y);
+            
+            for (let i = 1; i < performancePoints.length; i++) {
+                ctx.lineTo(performancePoints[i].x, performancePoints[i].y);
+            }
+            
+            ctx.lineTo(performancePoints[performancePoints.length - 1].x, canvas.height);
+            ctx.closePath();
+            ctx.fill();
+            
+            // Draw benchmark line
+            const benchmarkPoints = [];
+            let benchmarkY = canvas.height * 0.7; // Start at same point
+            
+            for (let i = 0; i < numPoints; i++) {
+                const x = (i / (numPoints - 1)) * canvas.width;
+                
+                // Generate next point with less upward trend and less volatility
+                const randomFactor = Math.random() * 10 - 5; // Random between -5 and 5
+                const trendFactor = 0.2; // Slight upward trend
+                benchmarkY = Math.max(10, Math.min(canvas.height - 10, benchmarkY - randomFactor - trendFactor));
+                
+                benchmarkPoints.push({ x, y: benchmarkY });
+            }
+            
+            // Draw benchmark line
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.3)';
+            ctx.lineWidth = 1.5;
+            ctx.setLineDash([5, 5]);
+            ctx.beginPath();
+            ctx.moveTo(benchmarkPoints[0].x, benchmarkPoints[0].y);
+            
+            for (let i = 1; i < benchmarkPoints.length; i++) {
+                ctx.lineTo(benchmarkPoints[i].x, benchmarkPoints[i].y);
+            }
+            
+            ctx.stroke();
+            ctx.setLineDash([]);
+            
+            // Add legend
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.5)';
+            ctx.fillRect(canvas.width - 150, 10, 140, 50);
+            
+            // Your performance legend
+            ctx.strokeStyle = '#00C8FF';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.moveTo(canvas.width - 140, 25);
+            ctx.lineTo(canvas.width - 110, 25);
+            ctx.stroke();
+            
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.9)';
+            ctx.font = '12px Arial';
+            ctx.textAlign = 'left';
+            ctx.fillText('Your Performance', canvas.width - 100, 28);
+            
+            // Benchmark legend
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.3)';
+            ctx.lineWidth = 1.5;
+            ctx.setLineDash([5, 5]);
+            ctx.beginPath();
+            ctx.moveTo(canvas.width - 140, 45);
+            ctx.lineTo(canvas.width - 110, 45);
+            ctx.stroke();
+            ctx.setLineDash([]);
+            
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.7)';
+            ctx.font = '12px Arial';
+            ctx.textAlign = 'left';
+            ctx.fillText('Market Benchmark', canvas.width - 100, 48);
+            
+            container.appendChild(canvas);
+        }
+        
+        // Function to create algorithm chart
+        function createAlgorithmChart() {
+            const container = document.getElementById('algorithm-chart');
+            if (!container) return;
+            
+            const canvas = document.createElement('canvas');
+            canvas.width = container.offsetWidth;
+            canvas.height = container.offsetHeight;
+            const ctx = canvas.getContext('2d');
+            
+            // Background
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.2)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            // Grid lines
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.05)';
+            ctx.lineWidth = 1;
+            
+            // Horizontal grid lines
+            for (let i = 0; i <= 4; i++) {
+                const y = (i / 4) * canvas.height;
+                ctx.beginPath();
+                ctx.moveTo(0, y);
+                ctx.lineTo(canvas.width, y);
+                ctx.stroke();
+                
+                // Value labels
+                const value = Math.round((4 - i) * 25);
+                ctx.fillStyle = 'rgba(255, 255, 255, 0.5)';
+                ctx.font = '12px Arial';
+                ctx.textAlign = 'left';
+                ctx.fillText(value + '%', 10, y + 15);
+            }
+            
+            // Vertical grid lines (months)
+            const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+            for (let i = 0; i <= 12; i++) {
+                const x = (i / 12) * canvas.width;
+                ctx.beginPath();
+                ctx.moveTo(x, 0);
+                ctx.lineTo(x, canvas.height);
+                ctx.stroke();
+                
+                // Month labels
+                if (i < 12) {
+                    ctx.fillStyle = 'rgba(255, 255, 255, 0.5)';
+                    ctx.font = '12px Arial';
+                    ctx.textAlign = 'center';
+                    ctx.fillText(months[i], x + (canvas.width / 24), canvas.height - 10);
+                }
+            }
+            
+            // Generate algorithm performance data
+            const algorithmPoints = [];
+            const numPoints = 120; // 10 points per month
+            let currentY = canvas.height * 0.8; // Start at 20% up from bottom
+            
+            for (let i = 0; i < numPoints; i++) {
+                const x = (i / (numPoints - 1)) * canvas.width;
+                
+                // Generate next point with upward trend and volatility
+                const randomFactor = Math.random() * 15 - 7.5; // Random between -7.5 and 7.5
+                const trendFactor = 0.7; // Upward trend
+                currentY = Math.max(10, Math.min(canvas.height - 10, currentY - randomFactor - trendFactor));
+                
+                algorithmPoints.push({ x, y: currentY });
+            }
+            
+            // Draw algorithm line
+            ctx.strokeStyle = '#36F9C5';
+            ctx.lineWidth = 3;
+            ctx.beginPath();
+            ctx.moveTo(algorithmPoints[0].x, algorithmPoints[0].y);
+            
+            for (let i = 1; i < algorithmPoints.length; i++) {
+                ctx.lineTo(algorithmPoints[i].x, algorithmPoints[i].y);
+            }
+            
+            ctx.stroke();
+            
+            // Add subtle glow effect
+            ctx.shadowColor = '#36F9C5';
+            ctx.shadowBlur = 10;
+            ctx.stroke();
+            ctx.shadowBlur = 0;
+            
+            // Generate user performance data
+            const userPoints = [];
+            let userY = canvas.height * 0.8; // Start at same point
+            
+            for (let i = 0; i < numPoints; i++) {
+                const x = (i / (numPoints - 1)) * canvas.width;
+                
+                // Generate next point with less upward trend and more volatility
+                const randomFactor = Math.random() * 25 - 12.5; // Random between -12.5 and 12.5
+                const trendFactor = 0.4; // Less upward trend
+                userY = Math.max(10, Math.min(canvas.height - 10, userY - randomFactor - trendFactor));
+                
+                userPoints.push({ x, y: userY });
+            }
+            
+            // Draw user line
+            ctx.strokeStyle = '#00C8FF';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.moveTo(userPoints[0].x, userPoints[0].y);
+            
+            for (let i = 1; i < userPoints.length; i++) {
+                ctx.lineTo(userPoints[i].x, userPoints[i].y);
+            }
+            
+            ctx.stroke();
+            
+            // Generate market benchmark data
+            const marketPoints = [];
+            let marketY = canvas.height * 0.8; // Start at same point
+            
+            for (let i = 0; i < numPoints; i++) {
+                const x = (i / (numPoints - 1)) * canvas.width;
+                
+                // Generate next point with less upward trend and less volatility
+                const randomFactor = Math.random() * 10 - 5; // Random between -5 and 5
+                const trendFactor = 0.2; // Slight upward trend
+                marketY = Math.max(10, Math.min(canvas.height - 10, marketY - randomFactor - trendFactor));
+                
+                marketPoints.push({ x, y: marketY });
+            }
+            
+            // Draw market line
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.3)';
+            ctx.lineWidth = 1.5;
+            ctx.setLineDash([5, 5]);
+            ctx.beginPath();
+            ctx.moveTo(marketPoints[0].x, marketPoints[0].y);
+            
+            for (let i = 1; i < marketPoints.length; i++) {
+                ctx.lineTo(marketPoints[i].x, marketPoints[i].y);
+            }
+            
+            ctx.stroke();
+            ctx.setLineDash([]);
+            
+            // Add legend
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.5)';
+            ctx.fillRect(canvas.width - 200, 20, 180, 90);
+            
+            // Algorithm legend
+            ctx.strokeStyle = '#36F9C5';
+            ctx.lineWidth = 3;
+            ctx.beginPath();
+            ctx.moveTo(canvas.width - 180, 40);
+            ctx.lineTo(canvas.width - 140, 40);
+            ctx.stroke();
+            
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.9)';
+            ctx.font = '12px Arial';
+            ctx.textAlign = 'left';
+            ctx.fillText('Algorithm Performance', canvas.width - 130, 43);
+            
+            // User legend
+            ctx.strokeStyle = '#00C8FF';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.moveTo(canvas.width - 180, 65);
+            ctx.lineTo(canvas.width - 140, 65);
+            ctx.stroke();
+            
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.9)';
+            ctx.font = '12px Arial';
+            ctx.textAlign = 'left';
+            ctx.fillText('Your Performance', canvas.width - 130, 68);
+            
+            // Market legend
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.3)';
+            ctx.lineWidth = 1.5;
+            ctx.setLineDash([5, 5]);
+            ctx.beginPath();
+            ctx.moveTo(canvas.width - 180, 90);
+            ctx.lineTo(canvas.width - 140, 90);
+            ctx.stroke();
+            ctx.setLineDash([]);
+            
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.7)';
+            ctx.font = '12px Arial';
+            ctx.textAlign = 'left';
+            ctx.fillText('Market Benchmark', canvas.width - 130, 93);
+            
+            container.appendChild(canvas);
+        }
+        
+        // Function to create insight chart
+        function createInsightChart() {
+            const container = document.getElementById('insight-chart');
+            if (!container) return;
+            
+            const canvas = document.createElement('canvas');
+            canvas.width = container.offsetWidth;
+            canvas.height = container.offsetHeight;
+            const ctx = canvas.getContext('2d');
+            
+            // Background
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.2)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            // Grid lines
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.05)';
+            ctx.lineWidth = 1;
+            
+            // Horizontal grid lines
+            for (let i = 0; i <= 4; i++) {
+                const y = (i / 4) * canvas.height;
+                ctx.beginPath();
+                ctx.moveTo(0, y);
+                ctx.lineTo(canvas.width, y);
+                ctx.stroke();
+            }
+            
+            // Vertical grid lines
+            for (let i = 0; i <= 6; i++) {
+                const x = (i / 6) * canvas.width;
+                ctx.beginPath();
+                ctx.moveTo(x, 0);
+                ctx.lineTo(x, canvas.height);
+                ctx.stroke();
+            }
+            
+            // Generate price data points
+            const pricePoints = [];
+            const numPoints = 60;
+            let currentY = canvas.height * 0.7; // Start at 30% up from bottom
+            
+            for (let i = 0; i < numPoints; i++) {
+                const x = (i / (numPoints - 1)) * canvas.width;
+                
+                // Generate next point with upward trend and volatility
+                let randomFactor = Math.random() * 15 - 7.5; // Random between -7.5 and 7.5
+                let trendFactor = 0.5; // Upward trend
+                
+                // Add a surge in the middle
+                if (i > numPoints * 0.3 && i < numPoints * 0.7) {
+                    trendFactor = 1.2;
+                }
+                
+                currentY = Math.max(10, Math.min(canvas.height - 10, currentY - randomFactor - trendFactor));
+                
+                pricePoints.push({ x, y: currentY });
+            }
+            
+            // Draw price line
+            ctx.strokeStyle = '#00C8FF';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.moveTo(pricePoints[0].x, pricePoints[0].y);
+            
+            for (let i = 1; i < pricePoints.length; i++) {
+                ctx.lineTo(pricePoints[i].x, pricePoints[i].y);
+            }
+            
+            ctx.stroke();
+            
+            // Add subtle glow effect
+            ctx.shadowColor = '#00C8FF';
+            ctx.shadowBlur = 5;
+            ctx.stroke();
+            ctx.shadowBlur = 0;
+            
+            // Mark entry point
+            const entryIndex = Math.floor(numPoints * 0.3);
+            const entryPoint = pricePoints[entryIndex];
+            
+            ctx.fillStyle = '#36F9C5';
+            ctx.beginPath();
+            ctx.arc(entryPoint.x, entryPoint.y, 5, 0, Math.PI * 2);
+            ctx.fill();
+            
+            // Add entry label
+            ctx.fillStyle = 'rgba(54, 249, 197, 0.9)';
+            ctx.font = '12px Arial';
+            ctx.textAlign = 'center';
+            ctx.fillText('Entry', entryPoint.x, entryPoint.y - 10);
+            
+            // Mark exit point
+            const exitIndex = Math.floor(numPoints * 0.7);
+            const exitPoint = pricePoints[exitIndex];
+            
+            ctx.fillStyle = '#FF3A5E';
+            ctx.beginPath();
+            ctx.arc(exitPoint.x, exitPoint.y, 5, 0, Math.PI * 2);
+            ctx.fill();
+            
+            // Add exit label
+            ctx.fillStyle = 'rgba(255, 58, 94, 0.9)';
+            ctx.font = '12px Arial';
+            ctx.textAlign = 'center';
+            ctx.fillText('Exit', exitPoint.x, exitPoint.y - 10);
+            
+            // Mark optimal exit point
+            const optimalExitIndex = Math.floor(numPoints * 0.8);
+            const optimalExitPoint = pricePoints[optimalExitIndex];
+            
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.5)';
+            ctx.beginPath();
+            ctx.arc(optimalExitPoint.x, optimalExitPoint.y, 5, 0, Math.PI * 2);
+            ctx.fill();
+            
+            // Add optimal exit label
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.5)';
+            ctx.font = '12px Arial';
+            ctx.textAlign = 'center';
+            ctx.fillText('Optimal Exit', optimalExitPoint.x, optimalExitPoint.y - 10);
+            
+            // Draw line between exit and optimal exit
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.3)';
+            ctx.lineWidth = 1;
+            ctx.setLineDash([5, 5]);
+            ctx.beginPath();
+            ctx.moveTo(exitPoint.x, exitPoint.y);
+            ctx.lineTo(optimalExitPoint.x, optimalExitPoint.y);
+            ctx.stroke();
+            ctx.setLineDash([]);
+            
+            container.appendChild(canvas);
+        }
+    </script>
+</body>
+</html>
