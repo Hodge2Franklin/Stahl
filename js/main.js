@@ -383,11 +383,44 @@ function initArticleFilterTabs() {
 
 // Dashboard Tabs Function
 function initDashboardTabs() {
-    const dashboardTabs = document.querySelectorAll('.dashboard-tab');
+    // Fixed: Changed selector from 'dashboard-tab' to 'tab-item' to match HTML
+    const dashboardTabs = document.querySelectorAll('.tab-item');
     if (dashboardTabs.length === 0) return;
     
     const dashboardContainers = document.querySelectorAll('.dashboard-container');
     
+    // Set first tab as active by default if none is active
+    let activeTabFound = false;
+    dashboardTabs.forEach(tab => {
+        if (tab.classList.contains('active')) {
+            activeTabFound = true;
+        }
+    });
+    
+    if (!activeTabFound && dashboardTabs.length > 0) {
+        dashboardTabs[0].classList.add('active');
+        if (dashboardContainers.length > 0) {
+            dashboardContainers[0].style.display = 'block';
+            dashboardContainers[0].style.opacity = '1';
+        }
+    }
+    
+    // Hide all containers except the active one
+    let activeIndex = 0;
+    dashboardTabs.forEach((tab, index) => {
+        if (tab.classList.contains('active')) {
+            activeIndex = index;
+        }
+    });
+    
+    dashboardContainers.forEach((container, index) => {
+        if (index !== activeIndex) {
+            container.style.display = 'none';
+            container.style.opacity = '0';
+        }
+    });
+    
+    // Add click event listeners to tabs
     dashboardTabs.forEach((tab, index) => {
         tab.addEventListener('click', function() {
             // Update active class on tabs
@@ -448,185 +481,233 @@ function generatePlaceholderImages() {
     
     placeholders.forEach(placeholder => {
         const id = placeholder.id;
-        const width = placeholder.width || 100;
-        const height = placeholder.height || 100;
+        const type = id.split('-')[0];
         
-        // Generate placeholder based on id
-        if (id === 'logo-placeholder') {
-            placeholder.src = generateLogoPlaceholder();
-        } else if (id.includes('article')) {
-            placeholder.src = generateArticlePlaceholder(width, height);
-        } else if (id.includes('chart')) {
-            placeholder.src = generateChartPlaceholder(width, height);
-        } else {
-            placeholder.src = generateDefaultPlaceholder(width, height);
+        // Generate different placeholder based on type
+        switch(type) {
+            case 'chart':
+                generateChartPlaceholder(placeholder);
+                break;
+            case 'heatmap':
+                generateHeatmapPlaceholder(placeholder);
+                break;
+            case 'network':
+                generateNetworkPlaceholder(placeholder);
+                break;
+            default:
+                generateDefaultPlaceholder(placeholder);
         }
     });
 }
 
-function generateLogoPlaceholder() {
-    // Create canvas for logo
+// Generate chart placeholder
+function generateChartPlaceholder(container) {
     const canvas = document.createElement('canvas');
+    canvas.width = container.offsetWidth;
+    canvas.height = container.offsetHeight;
     const ctx = canvas.getContext('2d');
-    canvas.width = 50;
-    canvas.height = 50;
     
-    // Draw logo
-    ctx.fillStyle = '#00C8FF';
-    ctx.fillRect(0, 0, 50, 50);
+    // Background
+    ctx.fillStyle = 'rgba(0, 0, 0, 0.2)';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
     
-    // Add some design elements
-    ctx.strokeStyle = '#0A0E17';
-    ctx.lineWidth = 2;
-    ctx.beginPath();
-    ctx.moveTo(10, 25);
-    ctx.lineTo(40, 25);
-    ctx.stroke();
-    
-    ctx.beginPath();
-    ctx.moveTo(25, 10);
-    ctx.lineTo(25, 40);
-    ctx.stroke();
-    
-    return canvas.toDataURL();
-}
-
-function generateArticlePlaceholder(width, height) {
-    // Create canvas for article image
-    const canvas = document.createElement('canvas');
-    const ctx = canvas.getContext('2d');
-    canvas.width = width;
-    canvas.height = height;
-    
-    // Draw background
-    const gradient = ctx.createLinearGradient(0, 0, width, height);
-    gradient.addColorStop(0, '#0A0E17');
-    gradient.addColorStop(1, '#111927');
-    ctx.fillStyle = gradient;
-    ctx.fillRect(0, 0, width, height);
-    
-    // Add some design elements
-    ctx.strokeStyle = '#00C8FF';
-    ctx.lineWidth = 2;
-    
-    // Draw random chart-like elements
-    ctx.beginPath();
-    ctx.moveTo(0, height * 0.8);
-    
-    for (let x = 0; x < width; x += width / 10) {
-        const y = height * 0.8 - Math.random() * height * 0.6;
-        ctx.lineTo(x, y);
-    }
-    
-    ctx.lineTo(width, height * 0.8 - Math.random() * height * 0.6);
-    ctx.stroke();
-    
-    return canvas.toDataURL();
-}
-
-function generateChartPlaceholder(width, height) {
-    // Create canvas for chart
-    const canvas = document.createElement('canvas');
-    const ctx = canvas.getContext('2d');
-    canvas.width = width;
-    canvas.height = height;
-    
-    // Draw background
-    ctx.fillStyle = '#0A0E17';
-    ctx.fillRect(0, 0, width, height);
-    
-    // Draw grid lines
-    ctx.strokeStyle = 'rgba(255, 255, 255, 0.1)';
-    ctx.lineWidth = 1;
-    
-    // Horizontal grid lines
-    for (let y = 0; y < height; y += height / 5) {
-        ctx.beginPath();
-        ctx.moveTo(0, y);
-        ctx.lineTo(width, y);
-        ctx.stroke();
-    }
-    
-    // Vertical grid lines
-    for (let x = 0; x < width; x += width / 10) {
-        ctx.beginPath();
-        ctx.moveTo(x, 0);
-        ctx.lineTo(x, height);
-        ctx.stroke();
-    }
-    
-    // Draw chart line
-    ctx.strokeStyle = '#00C8FF';
-    ctx.lineWidth = 2;
-    ctx.beginPath();
-    ctx.moveTo(0, height * 0.5);
-    
-    // Generate random points for the chart
+    // Generate random data points
     const points = [];
-    for (let i = 0; i <= 10; i++) {
-        points.push({
-            x: width * (i / 10),
-            y: height * (0.2 + Math.random() * 0.6)
-        });
+    const numPoints = 20;
+    const startY = canvas.height * 0.5;
+    let currentY = startY;
+    
+    for (let i = 0; i < numPoints; i++) {
+        const x = (i / (numPoints - 1)) * canvas.width;
+        
+        // Generate next point with trend bias
+        const randomFactor = Math.random() * 10 - 5;
+        const trendFactor = Math.random() > 0.5 ? 1 : -1;
+        currentY = Math.max(10, Math.min(canvas.height - 10, currentY + randomFactor + trendFactor));
+        
+        points.push({ x, y: currentY });
     }
     
-    // Draw smooth curve through points
+    // Draw line
+    ctx.strokeStyle = 'rgb(0, 200, 255)';
+    ctx.lineWidth = 2;
     ctx.beginPath();
     ctx.moveTo(points[0].x, points[0].y);
     
     for (let i = 1; i < points.length; i++) {
-        const xc = (points[i].x + points[i - 1].x) / 2;
-        const yc = (points[i].y + points[i - 1].y) / 2;
-        ctx.quadraticCurveTo(points[i - 1].x, points[i - 1].y, xc, yc);
+        ctx.lineTo(points[i].x, points[i].y);
     }
     
     ctx.stroke();
     
-    // Add gradient under the line
-    const gradient = ctx.createLinearGradient(0, 0, 0, height);
+    // Add subtle glow effect
+    ctx.shadowColor = 'rgb(0, 200, 255)';
+    ctx.shadowBlur = 5;
+    ctx.stroke();
+    ctx.shadowBlur = 0;
+    
+    // Add area fill
+    const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
     gradient.addColorStop(0, 'rgba(0, 200, 255, 0.2)');
-    gradient.addColorStop(1, 'rgba(0, 200, 255, 0)');
+    gradient.addColorStop(1, 'rgba(0, 200, 255, 0.0)');
     
     ctx.fillStyle = gradient;
     ctx.beginPath();
-    ctx.moveTo(0, height);
-    ctx.lineTo(0, points[0].y);
+    ctx.moveTo(points[0].x, canvas.height);
+    ctx.lineTo(points[0].x, points[0].y);
     
     for (let i = 1; i < points.length; i++) {
-        const xc = (points[i].x + points[i - 1].x) / 2;
-        const yc = (points[i].y + points[i - 1].y) / 2;
-        ctx.quadraticCurveTo(points[i - 1].x, points[i - 1].y, xc, yc);
+        ctx.lineTo(points[i].x, points[i].y);
     }
     
-    ctx.lineTo(width, height);
+    ctx.lineTo(points[points.length - 1].x, canvas.height);
     ctx.closePath();
     ctx.fill();
     
-    return canvas.toDataURL();
+    container.appendChild(canvas);
 }
 
-function generateDefaultPlaceholder(width, height) {
-    // Create canvas for default placeholder
+// Generate heatmap placeholder
+function generateHeatmapPlaceholder(container) {
     const canvas = document.createElement('canvas');
+    canvas.width = container.offsetWidth;
+    canvas.height = container.offsetHeight;
     const ctx = canvas.getContext('2d');
-    canvas.width = width;
-    canvas.height = height;
     
-    // Draw background
-    ctx.fillStyle = '#0A0E17';
-    ctx.fillRect(0, 0, width, height);
+    // Background
+    ctx.fillStyle = 'rgba(0, 0, 0, 0.2)';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
     
-    // Add some design elements
-    ctx.strokeStyle = '#00C8FF';
-    ctx.lineWidth = 2;
-    ctx.strokeRect(10, 10, width - 20, height - 20);
+    // Generate heatmap cells
+    const cellSize = 20;
+    const cols = Math.ceil(canvas.width / cellSize);
+    const rows = Math.ceil(canvas.height / cellSize);
+    
+    for (let i = 0; i < cols; i++) {
+        for (let j = 0; j < rows; j++) {
+            const x = i * cellSize;
+            const y = j * cellSize;
+            
+            // Generate random heat value
+            const heat = Math.random();
+            
+            // Determine color based on heat value
+            let color;
+            if (heat < 0.3) {
+                color = `rgba(0, 100, 255, ${heat + 0.1})`;
+            } else if (heat < 0.6) {
+                color = `rgba(0, 200, 255, ${heat + 0.1})`;
+            } else if (heat < 0.8) {
+                color = `rgba(255, 200, 0, ${heat + 0.1})`;
+            } else {
+                color = `rgba(255, 50, 50, ${heat + 0.1})`;
+            }
+            
+            ctx.fillStyle = color;
+            ctx.fillRect(x, y, cellSize, cellSize);
+        }
+    }
+    
+    container.appendChild(canvas);
+}
+
+// Generate network placeholder
+function generateNetworkPlaceholder(container) {
+    const canvas = document.createElement('canvas');
+    canvas.width = container.offsetWidth;
+    canvas.height = container.offsetHeight;
+    const ctx = canvas.getContext('2d');
+    
+    // Background
+    ctx.fillStyle = 'rgba(0, 0, 0, 0.2)';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    
+    // Generate nodes
+    const nodes = [];
+    const numNodes = 15;
+    
+    for (let i = 0; i < numNodes; i++) {
+        nodes.push({
+            x: Math.random() * canvas.width,
+            y: Math.random() * canvas.height,
+            radius: Math.random() * 5 + 3,
+            color: `rgba(${Math.random() * 100 + 100}, ${Math.random() * 200 + 55}, 255, 0.8)`
+        });
+    }
+    
+    // Draw connections
+    ctx.strokeStyle = 'rgba(0, 200, 255, 0.2)';
+    ctx.lineWidth = 1;
+    
+    for (let i = 0; i < nodes.length; i++) {
+        for (let j = i + 1; j < nodes.length; j++) {
+            // Only connect some nodes
+            if (Math.random() > 0.7) continue;
+            
+            const nodeA = nodes[i];
+            const nodeB = nodes[j];
+            
+            ctx.beginPath();
+            ctx.moveTo(nodeA.x, nodeA.y);
+            ctx.lineTo(nodeB.x, nodeB.y);
+            ctx.stroke();
+        }
+    }
+    
+    // Draw nodes
+    nodes.forEach(node => {
+        ctx.fillStyle = node.color;
+        ctx.beginPath();
+        ctx.arc(node.x, node.y, node.radius, 0, Math.PI * 2);
+        ctx.fill();
+        
+        // Add glow effect
+        ctx.shadowColor = node.color;
+        ctx.shadowBlur = 10;
+        ctx.fill();
+        ctx.shadowBlur = 0;
+    });
+    
+    container.appendChild(canvas);
+}
+
+// Generate default placeholder
+function generateDefaultPlaceholder(container) {
+    const canvas = document.createElement('canvas');
+    canvas.width = container.offsetWidth;
+    canvas.height = container.offsetHeight;
+    const ctx = canvas.getContext('2d');
+    
+    // Background
+    ctx.fillStyle = 'rgba(0, 0, 0, 0.2)';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    
+    // Draw grid lines
+    ctx.strokeStyle = 'rgba(0, 200, 255, 0.1)';
+    ctx.lineWidth = 1;
+    
+    // Vertical lines
+    for (let x = 0; x < canvas.width; x += 20) {
+        ctx.beginPath();
+        ctx.moveTo(x, 0);
+        ctx.lineTo(x, canvas.height);
+        ctx.stroke();
+    }
+    
+    // Horizontal lines
+    for (let y = 0; y < canvas.height; y += 20) {
+        ctx.beginPath();
+        ctx.moveTo(0, y);
+        ctx.lineTo(canvas.width, y);
+        ctx.stroke();
+    }
     
     // Draw text
-    ctx.font = '20px Arial';
-    ctx.fillStyle = '#FFFFFF';
+    ctx.fillStyle = 'rgba(0, 200, 255, 0.5)';
+    ctx.font = '14px var(--font-data)';
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
-    ctx.fillText('Stahl Insights', width / 2, height / 2);
+    ctx.fillText('Visualization Placeholder', canvas.width / 2, canvas.height / 2);
     
-    return canvas.toDataURL();
+    container.appendChild(canvas);
 }
