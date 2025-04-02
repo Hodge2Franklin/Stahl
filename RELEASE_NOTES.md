@@ -1,6 +1,20 @@
 # Stahl Insights - Release Notes
 
-## Version 1.2.0 (Current)
+## Version 1.2.1 (Current)
+**Release Date:** April 2, 2025
+
+### Bug Fixes
+- Fixed article filter tabs functionality
+  - Improved DOM checking for article page detection
+  - Implemented case-insensitive category comparison
+  - Enhanced error handling for articles without tags
+  - Added detailed logging for easier debugging
+- Updated documentation to reflect all recent changes
+  - Comprehensive deployment instructions
+  - Detailed restoration procedures
+  - Updated technical documentation
+
+## Version 1.2.0
 **Release Date:** April 2, 2025
 
 ### New Features
@@ -51,6 +65,8 @@
 
 ### Bug Fixes
 - Fixed dashboard tab switching issues
+  - Corrected selector mismatch in JavaScript code
+  - Added proper initialization for active tab display
 - Corrected various CSS styling inconsistencies
 - Improved accessibility features
 

@@ -2,15 +2,18 @@
 
 ## Current Deployment
 
-**Latest Deployment URL**: https://cbirwpjv.manus.space  
+**Latest Deployment URL**: https://crnolpcz.manus.space  
 **Deployment Date**: April 2, 2025  
 **Deployment Type**: Static website  
+**Current Version**: 1.2.1
 
 ## Deployment History
 
 | Date | URL | Version | Notes |
 |------|-----|---------|-------|
-| April 2, 2025 | https://cbirwpjv.manus.space | v1.2.0 | Current deployment with all features |
+| April 2, 2025 | https://crnolpcz.manus.space | v1.2.1 | Current deployment with article filter tab fixes |
+| April 2, 2025 | https://yjlalsrz.manus.space | v1.2.0 | Deployment with dashboard tab fixes |
+| April 2, 2025 | https://cbirwpjv.manus.space | v1.2.0 | Initial deployment with all features |
 | April 2, 2025 | https://wlflbpvh.manus.space | v1.1.0 | Previous deployment with dashboard tab functionality |
 | April 2, 2025 | https://iqwtfqfn.manus.space | v1.0.0 | Initial deployment |
 
@@ -41,6 +44,7 @@
    - Verify interactive elements functionality
    - Test responsive design on different devices
    - Ensure dashboard tabs are working correctly
+   - Verify article filter tabs function properly
 
 ## Restoration Process
 
@@ -56,6 +60,11 @@ If restoration is needed, follow these steps:
 3. Deploy to any static website hosting service:
    - Upload all files to the hosting service
    - The website will be immediately functional
+
+4. Verify functionality:
+   - Test dashboard tabs (Sentiment Heatmap, Deal Comparator, etc.)
+   - Test article filter tabs (All, Analysis, Hidden Gems, etc.)
+   - Check all interactive elements
 
 ## Technical Requirements
 
@@ -82,8 +91,19 @@ If restoration is needed, follow these steps:
 2. **JavaScript Functionality Issues**
    - Verify browser console for errors
    - Ensure all script files are properly loaded
+   - Check for selector mismatches in JavaScript code
 
-3. **Responsive Design Problems**
+3. **Dashboard Tab Issues**
+   - Verify the `initDashboardTabs()` function in main.js
+   - Ensure selectors match HTML structure (use '.tab-item' not '.dashboard-tab')
+
+4. **Article Filter Tab Issues**
+   - Check the `initArticleFilterTabs()` function in main.js
+   - Verify DOM checking for articles page
+   - Ensure case-insensitive category comparison
+   - Check error handling for articles without tags
+
+5. **Responsive Design Problems**
    - Test on multiple device sizes
    - Check media queries in CSS
 
@@ -96,3 +116,4 @@ If the deployed website experiences issues:
 3. Update the repository with the fix
 4. Redeploy the website
 5. Document the issue and solution in RELEASE_NOTES.md
+6. Update all relevant documentation files
