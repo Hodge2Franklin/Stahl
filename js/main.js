@@ -1,6 +1,8 @@
 // Stahl Insights Main JavaScript
 
 document.addEventListener('DOMContentLoaded', function() {
+    console.log("DOM fully loaded and parsed");
+    
     // Initialize breaking news ticker
     initBreakingNewsTicker();
     
@@ -21,6 +23,9 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Initialize index page tabs
     initIndexPageTabs();
+    
+    // Debug log to confirm initialization
+    console.log("All initializations complete");
 });
 
 // Breaking News Ticker Functions
@@ -309,6 +314,13 @@ function initDataRefresh() {
 // Article Filter Tabs Function
 function initArticleFilterTabs() {
     console.log("Initializing article filter tabs");
+    
+    // Fixed: Added direct DOM check to verify we're on the articles page
+    if (!document.querySelector('.filter-categories')) {
+        console.log("Not on articles page, skipping filter initialization");
+        return;
+    }
+    
     const filterCategories = document.querySelectorAll('.filter-category');
     if (filterCategories.length === 0) {
         console.log("No filter categories found");
@@ -330,19 +342,31 @@ function initArticleFilterTabs() {
     articleItems.forEach(article => {
         const articleTag = article.querySelector('.article-item-tag');
         if (articleTag) {
-            articleCategoryMap.set(article, articleTag.textContent.trim());
+            const category = articleTag.textContent.trim().toUpperCase();
+            console.log(`Article tagged as: ${category}`);
+            articleCategoryMap.set(article, category);
+        } else {
+            console.log("Article has no tag element");
         }
     });
     
     // Function to filter articles based on selected category
     function filterArticles(selectedCategory) {
         console.log(`Filtering articles by category: ${selectedCategory}`);
+        selectedCategory = selectedCategory.toUpperCase();
         
         articleItems.forEach(article => {
             const articleCategory = articleCategoryMap.get(article);
-            if (!articleCategory) return;
+            if (!articleCategory) {
+                console.log("Article has no category, always showing");
+                article.style.display = 'flex';
+                return;
+            }
             
-            if (selectedCategory === 'All' || selectedCategory === articleCategory) {
+            console.log(`Comparing selected: ${selectedCategory} with article: ${articleCategory}`);
+            
+            if (selectedCategory === 'ALL' || selectedCategory === articleCategory) {
+                console.log("Match found, showing article");
                 article.style.display = 'flex';
                 // Add animation for appearing items
                 article.style.opacity = '0';
@@ -352,6 +376,7 @@ function initArticleFilterTabs() {
                     article.style.transform = 'translateY(0)';
                 }, 50);
             } else {
+                console.log("No match, hiding article");
                 article.style.display = 'none';
             }
         });
@@ -375,8 +400,10 @@ function initArticleFilterTabs() {
     // Initialize with the active category
     const activeCategory = document.querySelector('.filter-category.active');
     if (activeCategory) {
+        console.log(`Initializing with active category: ${activeCategory.textContent.trim()}`);
         filterArticles(activeCategory.textContent.trim());
     } else if (filterCategories[0]) {
+        console.log(`No active category found, using first category: ${filterCategories[0].textContent.trim()}`);
         filterArticles(filterCategories[0].textContent.trim());
     }
 }
