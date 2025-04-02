@@ -12,6 +12,15 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Initialize data refresh simulation
     initDataRefresh();
+    
+    // Initialize article filter tabs
+    initArticleFilterTabs();
+    
+    // Initialize dashboard tabs
+    initDashboardTabs();
+    
+    // Initialize index page tabs
+    initIndexPageTabs();
 });
 
 // Breaking News Ticker Functions
@@ -297,6 +306,106 @@ function initDataRefresh() {
     }, 5000);
 }
 
+// Article Filter Tabs Function
+function initArticleFilterTabs() {
+    const filterCategories = document.querySelectorAll('.filter-category');
+    if (filterCategories.length === 0) return;
+    
+    const articleItems = document.querySelectorAll('.article-item');
+    
+    filterCategories.forEach(category => {
+        category.addEventListener('click', function() {
+            // Update active class
+            filterCategories.forEach(cat => cat.classList.remove('active'));
+            this.classList.add('active');
+            
+            const selectedCategory = this.textContent.trim();
+            
+            // Filter articles based on selected category
+            articleItems.forEach(article => {
+                const articleTag = article.querySelector('.article-item-tag');
+                if (!articleTag) return;
+                
+                const articleCategory = articleTag.textContent.trim();
+                
+                if (selectedCategory === 'All' || selectedCategory === articleCategory) {
+                    article.style.display = 'flex';
+                    // Add animation for appearing items
+                    article.style.opacity = '0';
+                    article.style.transform = 'translateY(20px)';
+                    setTimeout(() => {
+                        article.style.opacity = '1';
+                        article.style.transform = 'translateY(0)';
+                    }, 50);
+                } else {
+                    article.style.display = 'none';
+                }
+            });
+        });
+    });
+}
+
+// Dashboard Tabs Function
+function initDashboardTabs() {
+    const dashboardTabs = document.querySelectorAll('.dashboard-tab');
+    if (dashboardTabs.length === 0) return;
+    
+    const dashboardContainers = document.querySelectorAll('.dashboard-container');
+    
+    dashboardTabs.forEach((tab, index) => {
+        tab.addEventListener('click', function() {
+            // Update active class on tabs
+            dashboardTabs.forEach(t => t.classList.remove('active'));
+            this.classList.add('active');
+            
+            // Show corresponding dashboard container
+            dashboardContainers.forEach(container => {
+                container.style.display = 'none';
+                container.style.opacity = '0';
+            });
+            
+            if (dashboardContainers[index]) {
+                dashboardContainers[index].style.display = 'block';
+                // Add fade-in animation
+                setTimeout(() => {
+                    dashboardContainers[index].style.opacity = '1';
+                }, 50);
+            }
+        });
+    });
+}
+
+// Index Page Tabs Function
+function initIndexPageTabs() {
+    // Market Intelligence section tabs
+    const marketTabs = document.querySelectorAll('.market-tab');
+    if (marketTabs.length === 0) return;
+    
+    const marketContents = document.querySelectorAll('.market-content');
+    
+    marketTabs.forEach((tab, index) => {
+        tab.addEventListener('click', function() {
+            // Update active class on tabs
+            marketTabs.forEach(t => t.classList.remove('active'));
+            this.classList.add('active');
+            
+            // Show corresponding content
+            marketContents.forEach(content => {
+                content.style.display = 'none';
+                content.style.opacity = '0';
+            });
+            
+            if (marketContents[index]) {
+                marketContents[index].style.display = 'block';
+                // Add fade-in animation
+                setTimeout(() => {
+                    marketContents[index].style.opacity = '1';
+                }, 50);
+            }
+        });
+    });
+}
+
 // Placeholder Image Generation
 function generatePlaceholderImages() {
     const placeholders = document.querySelectorAll('[id$="-placeholder"]');
@@ -306,164 +415,182 @@ function generatePlaceholderImages() {
         const width = placeholder.width || 100;
         const height = placeholder.height || 100;
         
-        // Determine color based on placeholder type
-        let color = '#111927';
-        if (id.includes('logo')) {
-            color = '#00C8FF';
-        } else if (id.includes('dashboard')) {
-            color = '#0A0E17';
-        } else if (id.includes('user')) {
-            // Assign different colors to user avatars
-            const userIndex = id.match(/\d+/);
-            if (userIndex) {
-                const colors = ['#00C8FF', '#36F9C5', '#FF3A5E'];
-                color = colors[(parseInt(userIndex[0]) - 1) % colors.length];
-            }
+        // Generate placeholder based on id
+        if (id === 'logo-placeholder') {
+            placeholder.src = generateLogoPlaceholder();
+        } else if (id.includes('article')) {
+            placeholder.src = generateArticlePlaceholder(width, height);
+        } else if (id.includes('chart')) {
+            placeholder.src = generateChartPlaceholder(width, height);
+        } else {
+            placeholder.src = generateDefaultPlaceholder(width, height);
         }
-        
-        createPlaceholder(id, width, height, color);
     });
 }
 
-function createPlaceholder(id, width, height, color) {
-    const element = document.getElementById(id);
-    if (!element) return;
-    
+function generateLogoPlaceholder() {
+    // Create canvas for logo
     const canvas = document.createElement('canvas');
-    canvas.width = width === '100%' ? element.offsetWidth : width;
-    canvas.height = height;
     const ctx = canvas.getContext('2d');
-    ctx.fillStyle = color;
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    canvas.width = 50;
+    canvas.height = 50;
     
-    // Add some visual elements to make it look like a chart/data for certain placeholders
-    if (id.includes('dashboard')) {
-        drawFakeDashboard(ctx, canvas.width, canvas.height);
-    } else if (id.includes('article')) {
-        drawFakeArticleImage(ctx, canvas.width, canvas.height);
-    } else if (id.includes('logo')) {
-        drawFakeLogo(ctx, canvas.width, canvas.height);
-    }
+    // Draw logo
+    ctx.fillStyle = '#00C8FF';
+    ctx.fillRect(0, 0, 50, 50);
     
-    element.src = canvas.toDataURL();
+    // Add some design elements
+    ctx.strokeStyle = '#0A0E17';
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.moveTo(10, 25);
+    ctx.lineTo(40, 25);
+    ctx.stroke();
+    
+    ctx.beginPath();
+    ctx.moveTo(25, 10);
+    ctx.lineTo(25, 40);
+    ctx.stroke();
+    
+    return canvas.toDataURL();
 }
 
-function drawFakeDashboard(ctx, width, height) {
-    // Draw some fake charts and data elements
+function generateArticlePlaceholder(width, height) {
+    // Create canvas for article image
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d');
+    canvas.width = width;
+    canvas.height = height;
+    
+    // Draw background
+    const gradient = ctx.createLinearGradient(0, 0, width, height);
+    gradient.addColorStop(0, '#0A0E17');
+    gradient.addColorStop(1, '#111927');
+    ctx.fillStyle = gradient;
+    ctx.fillRect(0, 0, width, height);
+    
+    // Add some design elements
     ctx.strokeStyle = '#00C8FF';
     ctx.lineWidth = 2;
     
-    // Draw a line chart
-    ctx.beginPath();
-    ctx.moveTo(0, height * 0.7);
-    for (let x = 0; x < width; x += width/20) {
-        ctx.lineTo(x, height * 0.7 - Math.random() * height * 0.5);
-    }
-    ctx.stroke();
-    
-    // Draw a second line chart
-    ctx.strokeStyle = '#36F9C5';
+    // Draw random chart-like elements
     ctx.beginPath();
     ctx.moveTo(0, height * 0.8);
-    for (let x = 0; x < width; x += width/20) {
-        ctx.lineTo(x, height * 0.8 - Math.random() * height * 0.3);
+    
+    for (let x = 0; x < width; x += width / 10) {
+        const y = height * 0.8 - Math.random() * height * 0.6;
+        ctx.lineTo(x, y);
     }
+    
+    ctx.lineTo(width, height * 0.8 - Math.random() * height * 0.6);
     ctx.stroke();
     
-    // Draw some grid lines
+    return canvas.toDataURL();
+}
+
+function generateChartPlaceholder(width, height) {
+    // Create canvas for chart
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d');
+    canvas.width = width;
+    canvas.height = height;
+    
+    // Draw background
+    ctx.fillStyle = '#0A0E17';
+    ctx.fillRect(0, 0, width, height);
+    
+    // Draw grid lines
     ctx.strokeStyle = 'rgba(255, 255, 255, 0.1)';
     ctx.lineWidth = 1;
-    for (let y = 0; y < height; y += height/10) {
+    
+    // Horizontal grid lines
+    for (let y = 0; y < height; y += height / 5) {
         ctx.beginPath();
         ctx.moveTo(0, y);
         ctx.lineTo(width, y);
         ctx.stroke();
     }
     
-    for (let x = 0; x < width; x += width/10) {
+    // Vertical grid lines
+    for (let x = 0; x < width; x += width / 10) {
         ctx.beginPath();
         ctx.moveTo(x, 0);
         ctx.lineTo(x, height);
         ctx.stroke();
     }
     
-    // Add some fake data points
-    ctx.fillStyle = '#FF3A5E';
-    for (let i = 0; i < 10; i++) {
-        const x = Math.random() * width;
-        const y = Math.random() * height;
-        ctx.beginPath();
-        ctx.arc(x, y, 3, 0, Math.PI * 2);
-        ctx.fill();
-    }
-}
-
-function drawFakeArticleImage(ctx, width, height) {
-    // Draw a fake stock chart
-    ctx.strokeStyle = '#36F9C5';
+    // Draw chart line
+    ctx.strokeStyle = '#00C8FF';
     ctx.lineWidth = 2;
-    
     ctx.beginPath();
-    ctx.moveTo(0, height * 0.8);
-    for (let x = 0; x < width; x += width/15) {
-        ctx.lineTo(x, height * 0.8 - Math.random() * height * 0.6);
+    ctx.moveTo(0, height * 0.5);
+    
+    // Generate random points for the chart
+    const points = [];
+    for (let i = 0; i <= 10; i++) {
+        points.push({
+            x: width * (i / 10),
+            y: height * (0.2 + Math.random() * 0.6)
+        });
     }
+    
+    // Draw smooth curve through points
+    ctx.beginPath();
+    ctx.moveTo(points[0].x, points[0].y);
+    
+    for (let i = 1; i < points.length; i++) {
+        const xc = (points[i].x + points[i - 1].x) / 2;
+        const yc = (points[i].y + points[i - 1].y) / 2;
+        ctx.quadraticCurveTo(points[i - 1].x, points[i - 1].y, xc, yc);
+    }
+    
     ctx.stroke();
     
-    // Add some text-like elements
-    ctx.fillStyle = 'rgba(255, 255, 255, 0.2)';
-    for (let i = 0; i < 3; i++) {
-        ctx.fillRect(width * 0.1, height * 0.2 + i * 15, width * 0.8, 8);
+    // Add gradient under the line
+    const gradient = ctx.createLinearGradient(0, 0, 0, height);
+    gradient.addColorStop(0, 'rgba(0, 200, 255, 0.2)');
+    gradient.addColorStop(1, 'rgba(0, 200, 255, 0)');
+    
+    ctx.fillStyle = gradient;
+    ctx.beginPath();
+    ctx.moveTo(0, height);
+    ctx.lineTo(0, points[0].y);
+    
+    for (let i = 1; i < points.length; i++) {
+        const xc = (points[i].x + points[i - 1].x) / 2;
+        const yc = (points[i].y + points[i - 1].y) / 2;
+        ctx.quadraticCurveTo(points[i - 1].x, points[i - 1].y, xc, yc);
     }
+    
+    ctx.lineTo(width, height);
+    ctx.closePath();
+    ctx.fill();
+    
+    return canvas.toDataURL();
 }
 
-function drawFakeLogo(ctx, width, height) {
-    // Draw a stylized "S" for Stahl
-    ctx.strokeStyle = '#FFFFFF';
+function generateDefaultPlaceholder(width, height) {
+    // Create canvas for default placeholder
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d');
+    canvas.width = width;
+    canvas.height = height;
+    
+    // Draw background
+    ctx.fillStyle = '#0A0E17';
+    ctx.fillRect(0, 0, width, height);
+    
+    // Add some design elements
+    ctx.strokeStyle = '#00C8FF';
     ctx.lineWidth = 2;
+    ctx.strokeRect(10, 10, width - 20, height - 20);
     
-    // Draw the S shape
-    ctx.beginPath();
-    ctx.moveTo(width * 0.3, height * 0.2);
-    ctx.bezierCurveTo(
-        width * 0.7, height * 0.1,
-        width * 0.1, height * 0.5,
-        width * 0.5, height * 0.5
-    );
-    ctx.bezierCurveTo(
-        width * 0.9, height * 0.5,
-        width * 0.3, height * 0.9,
-        width * 0.7, height * 0.8
-    );
-    ctx.stroke();
+    // Draw text
+    ctx.font = '20px Arial';
+    ctx.fillStyle = '#FFFFFF';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText('Stahl Insights', width / 2, height / 2);
     
-    // Add a glow effect
-    ctx.shadowColor = '#00C8FF';
-    ctx.shadowBlur = 10;
-    ctx.stroke();
+    return canvas.toDataURL();
 }
-
-// Add pulse animation for data updates
-const style = document.createElement('style');
-style.textContent = `
-    @keyframes pulseOnce {
-        0% {
-            transform: scale(1);
-        }
-        50% {
-            transform: scale(1.05);
-            text-shadow: 0 0 10px currentColor;
-        }
-        100% {
-            transform: scale(1);
-        }
-    }
-    
-    .pulse-once {
-        animation: pulseOnce 1s ease;
-    }
-`;
-document.head.appendChild(style);
-
-// Call placeholder generation on load
-window.addEventListener('load', generatePlaceholderImages);
